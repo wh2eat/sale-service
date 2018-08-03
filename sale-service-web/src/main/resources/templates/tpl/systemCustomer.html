@@ -1,0 +1,52 @@
+<html>
+<body>
+
+    <div th:fragment="popupSelectFragment()">
+        <div id="systemCustomerSelectPage" lay-filter="systemCustomerSelectPageFilter"
+            fitWidth="800" fitHeight="380" class="sys-popup-page">
+            <div th:replace="tpl/systemCustomer::searchFragment()"></div>
+            <div th:replace="tpl/systemCustomer::listFragment()"></div>   
+        </div>
+    </div>
+
+	<div th:fragment="searchFragment()">
+		<div class="layui-row">
+			<form name="customerSearchForm" class="layui-form">
+				<table name="customerSearchTable" class="table-search"
+					lay-filter="customerSearchTableFilter">
+					<tr>
+						<td>联系人</td>
+						<td>联系电话</td>
+						<td>邮箱</td>
+						<td>联系地址</td>
+						<td width="60px"></td>
+					</tr>
+					<tr>
+						<td><input type="text" name="name" class="layui-input">
+						</td>
+						<td><input type="text" name="phone" class="layui-input">
+						</td>
+						<td><input type="text" name="email" class="layui-input">
+						</td>
+						<td><input type="text" name="address" class="layui-input">
+						</td>
+						<td align="right">
+							<button name="customerSearchBtn" class="layui-btn layui-btn-sm">
+								<i class="layui-icon layui-icon-search"></i>
+							</button>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+	<div th:fragment="listFragment()">
+		<table id="systemCustomerListTable" class="layui-table layui-hide"
+			lay-filter="systemCustomerListTableFilter">
+		</table>
+		<script type="text/html" id="systemCustomerTableToolTpl">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        </script>
+	</div>
+</body>
+</html>

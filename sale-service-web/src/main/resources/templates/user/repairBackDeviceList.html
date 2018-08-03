@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout">
+<head>
+</head>
+<body class="layui-layout-body">
+	<div layout:fragment="content">
+		<div class="layui-row" style="">
+			<div class="layui-col-md4" align="left">
+				<span>已返客设备列表</span>
+			</div>
+			<div class="layui-col-md4 layui-col-md-offset4" align="right">
+				
+			</div>
+		</div>
+		<hr/>
+		<div class="layui-row">
+           <form name="repairDeviceSearchForm" class="layui-form">
+              <input type="hidden" name="moreThanStatus" value="backWait">
+              <input type="hidden" name="repairStationUdid" th:value="${session.repairStationId}">
+              <table id="repairDeviceSearchTable" class="table-search"
+                    lay-filter="repairDeviceSearchTableFilter">
+                <tr>
+                    <td>维修单编号</td>
+                    <td>维修包编号</td>
+                    <td>设备sn</td>
+                    <td>返客快递单号</td>
+                    <td>发货时间</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" name="invoiceSerialNumber" class="layui-input">
+                    </td>
+                    <td>
+                        <input type="text" name="packageSerialNumber" class="layui-input">
+                    </td>
+                    <td>
+                        <input type="text" name="sn" class="layui-input">
+                    </td>
+                    <td>
+                        <input type="text" name="backExpressNumber" class="layui-input">
+                    </td>
+                    <td>
+                        <input type="text" id="deviceSearch4BackTime" name="backTime" class="layui-input">
+                    </td>
+                    <td>
+                        <button name="repairDeviceSearchBtn" class="layui-btn layui-btn-sm">
+                            <i class="layui-icon layui-icon-search"></i>
+                        </button>
+                    </td>
+                </tr>
+              </table>
+           </form>
+        </div>
+		<script type="text/html" id="repairDeviceTableToolTpl">
+            <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+		<table id="repairDeviceManageListTable" class="layui-table layui-hide"
+			lay-filter="repairDeviceManageListTableFilter">
+		</table>
+	</div>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+            var modulesPath = /*[[@{/static/js/modules/}]]*/'/static/js/modules/';
+            var jsVersion=[[${jsVersion}]];
+            layui.config({
+                base : modulesPath
+                ,version : jsVersion
+            //你存放新模块的目录，注意，不是layui的模块目录
+            }).use('repairBackDeviceList'); //加载入口
+        </script>
+	</th:block>
+</body>
+</html>

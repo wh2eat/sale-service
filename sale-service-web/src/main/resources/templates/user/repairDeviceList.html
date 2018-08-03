@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout">
+<head>
+</head>
+<body class="layui-layout-body">
+
+	<div layout:fragment="popup">
+
+		<div id="repairPackageSwitchPage" lay-filter="repairPackageSwitchPage"
+			fitWidth="800" fitHeight="600" class="sys-popup-page">
+			<div
+				th:replace="tpl/repairPackage::listTableFrg('0',${repairInvoiceId})"></div>
+		</div>
+
+		<div id="repairDevicePage" lay-filter="repairDevicePageFilter"
+			fitWidth="800" fitHeight="600" class="sys-popup-page">
+
+			<form class="layui-form" action="" id="repairDeviceForm"
+				lay-filter="repairDeviceFormFilter">
+				<input type="hidden" name="id">
+				<div class="layui-form-item">
+					<label class="layui-form-label">SN</label>
+					<div class="layui-input-inline">
+						<input type="text" name="sn" placeholder="请输入设备SN"
+							autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-input-inline">
+						<a class="layui-btn layui-btn-sm" name="loadRepairDeviceInfo">加载设备</a>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<label class="layui-form-label">IMEI</label>
+						<div class="layui-input-inline" style="width: 200px;">
+							<input type="text" name="imei" placeholder="请输入IMEI"
+								autocomplete="off" class="layui-input">
+						</div>
+						<div class="layui-form-mid">/</div>
+						<div class="layui-input-inline" style="width: 200px;">
+							<input type="text" name="imeiTwo" placeholder="请输入第二个IMEI"
+								autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<label class="layui-form-label">MEID</label>
+						<div class="layui-input-inline" style="width: 200px;">
+							<input type="text" name="meid" placeholder="请输入MEID"
+								autocomplete="off" class="layui-input">
+						</div>
+						<div class="layui-form-mid">/</div>
+						<div class="layui-input-inline" style="width: 200px;">
+							<input type="text" name="meidTwo" placeholder="请输入第二个MEID"
+								autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">PART号</label>
+					<div class="layui-input-block">
+						<input type="text" name="model" placeholder="请输入设备Part号"
+							autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+                    <label class="layui-form-label">型号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="machineType" placeholder="请输入设备型号"
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">出厂日期</label>
+					<div class="layui-input-block">
+						<input type="text" name="manufactureTime" id="deviceManufactureTime" placeholder="请输入设备出厂日期"
+							autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">代理商名称</label>
+					<div class="layui-input-block">
+						<input type="text" name="agentName" placeholder="请输入代理商名称"
+							autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">终端客户名称</label>
+					<div class="layui-input-block">
+						<input type="text" name="endCustomerName" placeholder="请输入终端客户名称"
+							autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">保修类型</label>
+					<div class="layui-input-block">
+						<select name="warrantyType" lay-verify="required">
+							<option value="0">保外</option>
+							<option value="10">保内</option>
+							<option value="20">协议延保（不包括：人为 等 各种损坏 仅为正常质保延长）</option>
+							<option value="30">协议全保（包括：人为 进水 等 各种人为损坏）</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item layui-form-text">
+					<label class="layui-form-label">问题描述</label>
+					<div class="layui-input-block">
+						<textarea name="faultDescription" placeholder="请输入设备问题"
+							class="layui-textarea"></textarea>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">随机附件</label>
+					<div class="layui-input-block">
+						<input type="text" name="attachment" placeholder="请输入随机附件"
+							autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn layui-btn-sm" lay-submit
+							lay-filter="repairDeviceFormSumitFilter">立即提交</button>
+						<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary"
+							lay-filter="repairDeviceFormRestFilter">重置</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div layout:fragment="content">
+		<form name="repairPacakgeROForm">
+			<input type="hidden" name="invoiceId" th:value="${repairInvoiceId}" />
+			<input type="hidden" name="id" th:value="${repairPackageId}" />
+		</form>
+		<div class="layui-row " style="">
+			<div class="layui-col-md4">
+				<h4>维修包信息</h4>
+			</div>
+			<div class="layui-col-md4 layui-col-md-offset4" align="right">
+				<a href="#" name="switchRepairPackageBtn" title="切换维修包"
+					class="layui-btn layui-btn-sm"> 切换维修包 </a>
+			</div>
+		</div>
+		<table id="repairDeviceBaseDataTable" class="layui-table layui-hide"
+			lay-filter="repairDeviceBaseDataTableFilter">
+		</table>
+
+		<div class="layui-row" style="margin-top: 20px;">
+			<div class="layui-col-md4" align="left">
+				<span>维修设备列表</span>
+			</div>
+			<div class="layui-col-md4 layui-col-md-offset4" align="right">
+				<div class="layui-btn-group" >
+					<button class="layui-btn layui-btn-sm"  name="addRepairPackageBtn">添加维修设备</button>
+				</div>
+			</div>
+		</div>
+		<script type="text/html" id="repairDeviceTableToolTpl">
+            <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+		<table id="repairDeviceListTable" class="layui-table layui-hide"
+			lay-filter="repairDeviceTableFilter">
+		</table>
+	</div>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+            var modulesPath = /*[[@{/static/js/modules/}]]*/'/static/js/modules/';
+            var jsVersion=[[${jsVersion}]];
+            layui.config({
+                base : modulesPath
+                ,version : jsVersion
+            //你存放新模块的目录，注意，不是layui的模块目录
+            }).use('repairDeviceList'); //加载入口
+        </script>
+	</th:block>
+</body>
+</html>

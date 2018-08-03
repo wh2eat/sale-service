@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout">
+<head>
+</head>
+<body class="layui-layout-body">
+    
+    <div layout:fragment="popup">
+        <div id="repairDevicePayFormPage" lay-filter="repairDevicePayFormPageFilter"
+            fitWidth="800" fitHeight="380" class="sys-popup-page">
+            <div align="center" style="padding:20px;">是否确定支付已完成？总费用:<label name="repairDeviceCostTotal"></label>（单位：人民币）</div>
+            <form class="layui-form" action="" id="repairDevicePayForm"
+                lay-filter="repairDevicePayFormFilter">
+                <input type="hidden" name="id"> 
+                <input type="hidden" name="sn">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">支付备注</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="payDescription" lay-verify="required"
+                            placeholder="请输入支持备注" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+	<div layout:fragment="content">
+		<div class="layui-row" style="">
+			<div class="layui-col-md4" align="left">
+				<span>待支付设备列表</span>
+			</div>
+			<div class="layui-col-md4 layui-col-md-offset4" align="right">
+			</div>
+		</div>
+		<hr/>
+		<div class="layui-row">
+           <form name="repairDeviceSearchForm" class="layui-form">
+              <input type="hidden" name="status" value="payWait">
+              <input type="hidden" name="repairStationUdid" th:value="${session.repairStationId}">
+              <table id="repairDeviceSearchTable" class="table-search"
+                    lay-filter="repairDeviceSearchTableFilter">
+                <tr>
+                    <td>维修单编号</td>
+                    <td>设备sn</td>
+                    <td>送修时间</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" name="invoiceSerialNumber" class="layui-input">
+                    </td>
+                    <td>
+                        <input type="text" name="sn" class="layui-input">
+                    </td>
+                    <td>
+                        <input type="text" id="deviceSearch4DeliveryTime" name="deliveryTime" readonly class="layui-input">
+                    </td>
+                    <td align="right" width="60px">
+                        <button name="repairDeviceSearchBtn" class="layui-btn layui-btn-sm">
+                            <i class="layui-icon layui-icon-search "></i>
+                        </button>
+                    </td>
+                </tr>
+              </table>
+           </form>
+        </div>
+		<script type="text/html" id="repairDeviceManageListTableToolTpl">
+            <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="pay-finish" title="支付完成">
+                <i class="layui-icon layui-icon-ok" style="font-size: 30px;color: #fff;font-weight:bold;"></i>
+            </a>
+            <a class="layui-btn layui-btn-xs" title="查看报价详情" 
+                href="index?target=repairDeviceManagePays&rdid={{d.id}}&rdsn={{d.sn}}" >
+                <i class="layui-icon layui-icon-form" style="font-size: 30px;color: #fff;font-weight:bold;"></i>
+            </a>
+        </script>
+		<table id="repairDeviceManageListTable" class="layui-table layui-hide"
+			lay-filter="repairDeviceManageListTableFilter">
+		</table>
+	</div>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+            var modulesPath = /*[[@{/static/js/modules/}]]*/'/static/js/modules/';
+            var jsVersion=[[${jsVersion}]];
+            layui.config({
+                base : modulesPath
+                ,version : jsVersion
+            //你存放新模块的目录，注意，不是layui的模块目录
+            }).use('repairDeviceManagePayList'); //加载入口
+        </script>
+	</th:block>
+</body>
+</html>

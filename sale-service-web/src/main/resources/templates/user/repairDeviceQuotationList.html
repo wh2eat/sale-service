@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout">
+<head>
+</head>
+<body class="layui-layout-body">
+    <div layout:fragment="popup">
+        <div id="repairDeviceQuotationInvoiceConfirmPage" lay-filter="repairDeviceQuotationInvoiceConfirmPageFilter"
+            fitWidth="800" fitHeight="285" class="sys-popup-page">
+            <form class="layui-form" action="" name="repairDeviceQuotationInvoiceForm"
+                lay-filter="repairDeviceQuotationInvoiceFormFilter">
+                <input type="hidden" name="id">
+                <input type="hidden" name="detectInvoiceId">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">确认状态</label>
+                    <div class="layui-input-block">
+                        <select name="confirmStatus" lay-verify="required">
+                            <option value="1">用户拒绝</option>
+                            <option value="9">用户确认</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block">
+                        <textarea name="confirmRemark" placeholder="请输入备注"
+                            class="layui-textarea"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+	<div layout:fragment="content">
+		<div class="layui-row" style="">
+			<div class="layui-col-md4" align="left">
+				<span>维修报价</span>
+			</div>
+			<div class="layui-col-md4 layui-col-md-offset4" align="right">
+			     <button class="layui-btn layui-btn-sm" name="save-quotation">保存报价</button>
+			     <button class="layui-btn layui-btn-sm" name="finish-quotation">同意报价</button>
+			     <button class="layui-btn layui-btn-sm layui-btn-danger" name="refuse-quotation">拒绝报价</button>
+			     <a name="back-btn" class="layui-btn layui-btn-sm" th:if="'rDeviceManageQuotationList'== ${indexNavItem}" th:href="@{/index(target=repairDeviceManageQuotations)}">返回</a>
+			     <a name="back-btn" class="layui-btn layui-btn-sm" th:if="'rDeviceManageConfirmList'== ${indexNavItem}" th:href="@{/index(target=repairDeviceManageConfirms)}">返回</a>
+			     <a name="back-btn" class="layui-btn layui-btn-sm" th:if="'rDeviceManagePayList'== ${indexNavItem}" th:href="@{/index(target=repairDeviceManagePays)}">返回</a>
+			</div>
+		</div>
+		<hr/>
+		<div class="layui-row" style="">
+		  <form class="layui-form" name="repairDeviceForm" lay-filter="repairDeviceFormFilter">
+		        <input type="hidden" name="id" th:value="${repairDeviceId}">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">SN</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="sn" th:value="${sn}" placeholder=""
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>          
+                <div class="layui-form-item">
+                    <label class="layui-form-label">客户信息</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="agentName" placeholder=""
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">结算币种</label>
+                    <div class="layui-input-block">
+                        <select name="currency">
+                            <option value="0">人民币</option>
+                            <option value="1">美元</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">支付类型</label>
+                    <div class="layui-input-block">
+                        <select name="payType">
+                            <option value="0">现付</option>
+                            <option value="1">月结</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">人工费用</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="laborCosts" placeholder=""
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">总费用</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="costTotal" placeholder=""
+                            autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </form>
+            <table id="repairDeviceQuotationListTable" lay-filter="repairDeviceQuotationListTableFilter" class=""></table>
+            <script type="text/html" id="repairDeviceQuotationListTableToolTpl">
+                <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="quotation-modify" title="编辑报价">
+                    <i class="layui-icon layui-icon-form" style="font-size: 30px; color: #fff;font-weight:bold;"></i>
+                </a>
+            </script>
+		</div>
+	</div>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+            var modulesPath = /*[[@{/static/js/modules/}]]*/'/static/js/modules/';
+            var jsVersion=[[${jsVersion}]];
+            layui.config({
+                base : modulesPath
+                ,version : jsVersion
+            //你存放新模块的目录，注意，不是layui的模块目录
+            }).use('repairDeviceQuotationList'); //加载入口
+        </script>
+	</th:block>
+</body>
+</html>

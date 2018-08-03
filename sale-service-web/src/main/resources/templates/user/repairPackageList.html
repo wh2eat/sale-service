@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout">
+<head>
+</head>
+<body class="layui-layout-body">
+	<div layout:fragment="popup">
+	   
+	   <div th:replace="tpl/systemCustomer::popupSelectFragment()"></div>
+	   	   
+	    <div id="repairInvoiceSelectPage" fitWidth="800" fitHeight="400" class="sys-popup-page">
+	       <div th:replace="tpl/repairInvoice::repairInvoiceListFragment(0)">
+	       </div>    
+	    </div>
+		<div id="repairPackagePage" lay-filter="repairPackagePageFilter"
+			 fitWidth="800" fitHeight="400" class="sys-popup-page">
+			<div style="margin-right: 40px;">
+				<form class="layui-form" action="" id="repairPackageForm"
+					lay-filter="repairPackageFormFilter">
+					<input type="hidden" name="id"> <input type="hidden"
+						name="serialNumber">
+					<div class="layui-form-item">
+						<label class="layui-form-label">快递单号</label>
+						<div class="layui-input-block">
+							<input type="text" name="expressNumber"
+								placeholder="请输入快递单号" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">快递名称</label>
+						<div class="layui-input-block">
+							<input type="text" name="expressName" 
+								placeholder="请输入快递名称" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					
+					<div class="layui-form-item">
+                        <label class="layui-form-label">联系人</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="contacts" lay-verify="required"
+                                placeholder="请输入联系人" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-from-mid">
+                            <a class="layui-btn layui-btn-sm" name="searchSystemCustomerBtn">查找</a>
+                        </div>
+                    </div>
+                    
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">联系电话</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="contactNumber" lay-verify="required"
+                                placeholder="请输入联系电话" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">联系地址</label>
+						<div class="layui-input-block">
+							<input type="text" name="contactAddress" lay-verify="required"
+								placeholder="请输入联系地址" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<button class="layui-btn layui-btn-sm" lay-submit
+								lay-filter="repairPackageFormSumitFilter">立即提交</button>
+							<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary"
+								lay-filter="repairPackageFormRestFilter">重置</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div layout:fragment="content">
+		<form name="repairInvoiceROForm">
+			<input type="hidden" name="id" th:value="${repairInvoiceId}" />
+		</form>
+		<div class="layui-row " style="">
+           <div class="layui-col-md4">
+                <h4>维修单信息</h4>
+            </div>
+            <div class="layui-col-md4 layui-col-md-offset4" align="right">
+                <button class="layui-btn layui-btn-sm" name="switchInvoiceBtn">切换维修单</button>
+            </div>
+        </div>
+        <table id="repairInvoiceDataTable" class="layui-table layui-hide" 
+            lay-filter="repairInvoiceDataTableFilter">
+        </table>
+		<div class="layui-row" style="margin-top:20px;">
+			<div class="layui-col-md4" align="left">
+				<span>维修包列表</span>
+			</div>
+			<div class="layui-col-md4 layui-col-md-offset4" align="right">
+				<div class="layui-btn-group">
+					<button class="layui-btn layui-btn-sm" name="addRepairPackageBtn">添加维修包</button>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div th:replace="tpl/repairPackage::listTableFrg('1',${repairInvoiceId})"></div>
+	</div>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+            var modulesPath = /*[[@{/static/js/modules/}]]*/'/static/js/modules/';
+            var jsVersion=[[${jsVersion}]];
+            layui.config({
+                base : modulesPath
+                ,version : jsVersion
+            //你存放新模块的目录，注意，不是layui的模块目录
+            }).use('repairPackageList'); //加载入口
+        </script>
+	</th:block>
+</body>
+</html>

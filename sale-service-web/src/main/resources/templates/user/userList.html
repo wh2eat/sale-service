@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout">
+<head>
+</head>
+<body class="layui-layout-body">
+    <div layout:fragment="popup">
+        <div id="userFromPage" lay-filter="userFromPageFilter" style="display:none;" fitWidth="800" fitHeight="520" >
+            <div style="margin:20px;margin-right:40px;">
+                <form class="layui-form" action="" id="userAddForm" lay-filter="userFormFilter">
+                <input type="hidden" name="id">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">所属维修站</label>
+                    <div th:if="${session.loginUser.type==10}" class="layui-input-block">
+                        <select type="text" name="repairStationId" id="userRepairStationId" lay-verify="required"
+                            placeholder="请选择维修站" autocomplete="off" class="layui-input">
+                        </select>
+                    </div>
+                    <div th:if="${session.loginUser.type!=10}" class="layui-input-block">
+                        <input type="hidden" name="repairStationId"  th:value="${session.loginRepairStation.id}"/>
+                        <input type="text" lay-verify="required" th:value="${session.loginRepairStation.name}"
+                            placeholder="请输入维修站名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">登陆名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="loginName" lay-verify="required|loginName"
+                            placeholder="请输入登陆名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密码</label>
+                    <div class="layui-input-inline">
+                        <input type="password" name="password"
+                            lay-verify="required|pass" placeholder="请输入密码" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">确认密码</label>
+                    <div class="layui-input-inline">
+                        <input type="password" name="confirmPassword" required
+                            lay-verify="required|confirmPass" placeholder="请确认密码" autocomplete="off"
+                            class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">类型</label>
+                    <div class="layui-input-block">
+                        <select name="type" lay-verify="required">
+                        
+                            <option th:if="${session.loginUser.type}==10" value="admin">系统管理员</option>
+                            <option value="repairStationAdmin">维修站管理员</option>
+<!--                             <option value="corporateAdmin">企业管理员</option> -->
+                            <option value="businessAdmin">业务管理员</option>
+                            <option value="maintenanceEngineer">维修工程师</option>
+                            
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="userName" lay-verify="required"
+                            placeholder="请输入用户名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">邮箱地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="email" required lay-verify="required|email"
+                            placeholder="请输入邮箱地址" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                
+                <div class="layui-form-item">
+                    <label class="layui-form-label">手机号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="telephone" required lay-verify="required|phone"
+                            placeholder="请输入手机号码" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="userAddFormSumitFilter">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary" lay-filter="userAddFormRestFilter">重置</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+	<div layout:fragment="content">    
+		<div class="layui-row">
+			<div class="layui-col-md4" align="left">
+				<span>用户列表</span>
+			</div>
+			<div th:if="${session.loginUser.type}<=11" class="layui-col-md4 layui-col-md-offset4" align="right">
+				<div class="layui-btn-group">
+					<button class="layui-btn layui-btn-sm" name="addUserBtn">添加用户</button>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<script type="text/html" id="userListTableToolTpl">
+            <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
+            <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+		<table id="userListTable" class="layui-table"
+			lay-filter="userListTableFilter">
+		</table>
+	</div>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+            var modulesPath = /*[[@{/static/js/modules/}]]*/'/static/js/modules/';
+            var jsVersion=[[${jsVersion}]];
+            layui.config({
+                base : modulesPath
+                ,version : jsVersion
+            //你存放新模块的目录，注意，不是layui的模块目录
+            }).use('userList'); //加载入口
+        </script>
+	</th:block>
+</body>
+</html>

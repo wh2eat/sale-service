@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"></meta>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1"></meta>
+<meta name="contextPath" content="${contextPath}">
+<title>盈达售后服务系统</title>
+<link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"></link>
+<link rel="stylesheet" th:href="@{/static/layui/css/layui.multiple.select.css}"></link>
+<style type="text/css">
+.table-search{
+    width: 100%;
+}
+
+.table-search tr td{
+    padding-right:20px;
+}
+
+.table-search tr td:last-child{
+    padding-right:0;
+}
+
+.sys-popup-page{
+    display:none;
+    padding:20px;
+}
+
+.layui-btn-list-search{
+    width:100%;
+}
+</style>
+</head>
+<body class="layui-layout-body">
+    <div class="layui-hide">
+        <form name="globalHidenForm">
+            <input type="hidden" name="id" th:value="${session.loginUser.udid}">
+            <input type="hidden" name="type" th:value="${session.loginUser.type}">
+            <input type="hidden" name="loginRepairStationId" th:value="${session.repairStationId}">
+        </form>
+    </div>
+    <div layout:fragment="popup"></div>
+	<div class="layui-layout layui-layout-admin">
+		<div class="layui-header">
+			<div class="layui-logo">盈达售后服务系统</div>
+			<ul class="layui-nav layui-layout-right">
+			    
+			    <li th:if="${session.loginUser.type}==10" class="layui-nav-item login-repair-station">
+                    <a href="javascript:;"> <span class="layui-header" name="login-repair-station-name"></span>
+                    </a>
+                    <dl class="layui-nav-child" name="login-repair-station-list">
+                        
+                    </dl>
+                </li>
+                
+                <li th:if="${session.loginUser.type}!=10" class="layui-nav-item" name="login-repair-station">
+                     <a href=""><span class="layui-header" name="login-repair-station-name"></span>
+                     </a>
+                </li>
+                
+				<li class="layui-nav-item">
+				    <a href="javascript:;"> <span
+						class="layui-header" th:text="${session.loginUser?.userName}" />
+				    </a>
+					<dl class="layui-nav-child">
+						<dd>
+							<a href="">基本资料</a>
+						</dd>
+						<dd>
+							<a href="">安全设置</a>
+						</dd>
+					</dl>
+				</li>
+				<li class="layui-nav-item">
+					<form name="logoutForm" th:action="@{/index/logout}" method="post">
+					</form> <a name="logoutBtn" href="#">退了</a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="layui-side layui-bg-black">
+			<div class="layui-side-scroll">
+				<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+				<ul class="layui-nav layui-nav-tree" lay-filter="test">
+					<li
+						th:class="${#strings.startsWith(indexNavItem,'repair') ? 'layui-nav-item layui-nav-itemed':'layui-nav-item'}">
+						<a class="" href="javascript:;">维修管理</a>
+						<dl class="layui-nav-child">
+						
+						   <dd th:class="'repairInvoiceList'== ${indexNavItem} ? layui-this">
+                                <a class="sv-button-load-content"
+                                    th:href="@{/index(target='repairInvoices')}"
+                                    name="repairInvoiceList">维修单列表</a>
+                           </dd>
+                           
+                           <dd th:class="'repairPackageList' == ${indexNavItem} ? layui-this">
+                                <a class="sv-button-load-content"
+                                    th:href="@{index(target='repairPackages')}"
+                                    name="repairPackages">维修包列表</a>
+                           </dd>
+                           
+                           <dd th:class="'repairDeviceList' == ${indexNavItem} ? layui-this">
+                                <a class="sv-button-load-content"
+                                    th:href="@{index(target='repairDevices')}"
+                                    name="repairDeviceList">维修设备列表</a>
+                           </dd>
+                        
+					    </dl>
+					</li>
+					
+				    <li
+                        th:class="${#strings.startsWith(indexNavItem,'rDeviceManage') ? 'layui-nav-item layui-nav-itemed':'layui-nav-item'}">
+                        <a class="" href="javascript:;">维修设备管理</a>
+                        <dl class="layui-nav-child">
+                            <dd th:class="'rDeviceManageNewList'== ${indexNavItem} ? layui-this">
+                                <a class="sv-button-load-content"
+                                    th:href="@{/index(target='repairDeviceManageNews')}"
+                                    name="repairPackageManageNewList">新增设备</a>
+                            </dd>
+                            
+                            <dd th:class="'rDeviceManageReviewList'== ${indexNavItem} ? layui-this">
+                                <a class="sv-button-load-content"
+                                    th:href="@{/index(target='repairDeviceManageReviews')}"
+                                    name="repairDeviceReviewList">待审核设备</a>
+                            </dd>
+                        
+                            <dd th:class="'rDeviceManageQuotationList'== ${indexNavItem} ? layui-this">
+                                <a class="sv-button-load-content"
+                                    th:href="@{/index(target='repairDeviceManageQuotations')}"
+                                    name="repairDeviceQuotationList">待报价设备</a>
+                            </dd>
+                            
+<!--                             <dd th:class="'rDeviceManageConfirmList'== ${indexNavItem} ? layui-this"> -->
+<!--                                 <a class="sv-button-load-content" -->
+<!--                                     th:href="@{/index(target='repairDeviceManageConfirms')}" -->
+<!--                                     name="repairDeviceConfirmList">待确认设备</a> -->
+<!--                             </dd> -->
+                            
+                            <dd th:class="'rDeviceManagePayList'== ${indexNavItem} ? layui-this">
+                                <a class="sv-button-load-content"
+                                    th:href="@{/index(target='repairDeviceManagePays')}"
+                                    name="repairDevicePayList">待支付设备</a>
+                            </dd>
+                        
+                            <dd th:class="'rDeviceManageWaitList'== ${indexNavItem} ? layui-this">
+                                <a class="sv-button-load-content"
+                                    th:href="@{/index(target='repairDeviceManageWaits')}"
+                                    name="rDeviceManageWaitList">已完成设备</a>
+                            </dd>
+                            <dd th:class="'rDeviceManageSearchList'== ${indexNavItem} ? layui-this">
+                                <a class="sv-button-load-content"
+                                    th:href="@{/index(target='repairDeviceManageSearchs')}"
+                                    name="rDeviceManageSearchList">维修设备查询</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    
+                    <li
+                        th:class="${#strings.startsWith(indexNavItem,'rBack') ? 'layui-nav-item layui-nav-itemed':'layui-nav-item'}">
+                        <a href="javascript:;">返客管理</a>
+                        <dl class="layui-nav-child">
+                            <dd th:class="'rBackPackageList' == ${indexNavItem} ? layui-this">
+                                <a class="sv-button-load-content"
+                                    th:href="@{/index(target='repairBackPackages')}"
+                                    name="repairBackPackageList">返客包列表</a>
+                            </dd>
+                            
+                            <dd th:class="'rBackPackageDeviceList' == ${indexNavItem} ? layui-this">
+                                <a class="sv-button-load-content"
+                                    th:href="@{/index(target='repairBackPackageDevices')}"
+                                    name="repairBackPackageDeviceList">返客包管理</a>
+                            </dd>
+                            
+                            <dd th:class="'rBackDeviceWaitList'== ${indexNavItem} ? layui-this">
+                                <a class="sv-button-load-content"
+                                    th:href="@{/index(target='repairBackDeviceWaits')}"
+                                    name="repairBackDeviceWaitList">待返客设备</a>
+                            </dd>
+                            
+                            <dd th:class="'rBackDeviceList' == ${indexNavItem} ? layui-this">
+                                <a class="sv-button-load-content"
+                                    th:href="@{/index(target='repairBackDevices')}"
+                                    name="repairBackDeviceList">已返客设备</a>
+                            </dd>
+                        </dl>
+                    </li>
+                    					
+					<li th:if="${session.loginUser.type==10}"
+						th:class="${#strings.startsWith(indexNavItem,'sData') ? 'layui-nav-item layui-nav-itemed':'layui-nav-item'}">
+						<a href="javascript:;">数据管理</a>
+						<dl class="layui-nav-child">
+							<dd th:if="${session.loginUser.type==10}" th:class="'sDataCustomerList' == ${indexNavItem} ? layui-this">
+								<a class="sv-button-load-content"
+									th:href="@{/index(target='systemCustomers')}"
+									name="sDataCustomerList">联系人列表</a>
+							</dd>
+						</dl>
+					</li>
+					<li
+						th:class="${#strings.startsWith(indexNavItem,'system') ? 'layui-nav-item layui-nav-itemed':'layui-nav-item'}">
+						<a href="javascript:;">系统管理</a>
+						<dl class="layui-nav-child">
+						    <dd th:if="${session.loginUser.type}==10" th:class="'systemRepairStationList' == ${indexNavItem} ? layui-this">
+                                <a class="sv-button-load-content"
+                                    th:href="@{/index(target='repairStations')}"
+                                    name="users">维修站列表</a>
+                            </dd>
+							<dd th:if="${session.loginUser.type}<=11" th:class="'systemUserList' == ${indexNavItem} ? layui-this">
+								<a class="sv-button-load-content"
+									th:href="@{/index(target='users')}"
+									name="users">用户列表</a>
+							</dd>
+							<dd th:class="'systemAboutSystem' == ${indexNavItem} ? layui-this">
+								<a class="sv-button-load-content" name="systemAboutSystem"
+									th:href="@{/index(target='aboutSystem')}">关于系统</a>
+							</dd>
+						</dl>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="layui-body">
+			<!-- 内容主体区域 -->
+			<div style="padding: 15px;" class="sv-main-content"
+				layout:fragment="content"></div>
+		</div>
+
+		<div class="layui-footer">
+			<!-- 底部固定区域 -->
+			© idatachina.com 售后服务系统
+		</div>
+	</div>
+	<script type="text/javascript" th:src="@{/static/layui/layui.js}"></script>
+	<th:block layout:fragment="script">
+	</th:block>
+</body>
+</html>

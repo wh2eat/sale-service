@@ -1,0 +1,151 @@
+<html>
+<head>
+<style type="text/css">
+
+</style>
+<title>iData售后服务系统</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"  media="all">
+</head>
+<body style="background-color: #eeeeee;">
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+	<div class="layui-fluid layui-bg-black layui-hide-xs" style="margin-bottom:30px;">
+			<div class="layui-row" style="height:60px;line-height: 60px;">
+				<div class="layui-col-md2" >
+				    <span class="layui-show-md-inline">&nbsp;</span>
+				</div>
+				<div class="layui-col-md8">
+					<div class="layui-row">
+                        <div class="layui-col-md6">
+                            <span class="layui-inline"
+                                style="color: #f2f2f2; font-size: 19px; font-weight: blod;">盈达售后服务系统</span>
+                        </div>
+                        <div class="layui-col-md6"  align="right">
+                            <ul class="layui-nav mw-login-top-user">
+                                <li class="layui-nav-item"><a th:href="@{/}">登录</a></li>
+                            </ul>
+                        </div>
+                    </div>
+				</div>
+				<div class="layui-col-md2" >
+				    &nbsp;
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-fluid" style="">
+			<div class="layui-row">
+				<div class="layui-col-xs1 layui-col-md2">&nbsp;</div>
+				<div class="layui-col-xs12 layui-col-md8"
+					style="margin-top:10px;background-color: #fff;padding:10px;">
+					<div class="layui-row" style="">
+						<span style="font-size: 20px; font-weight: 300;">维修进度查询</span>
+						<hr style="color: #aaa;">
+						<div style="height: 20px;">
+							<span th:if="${100000==errorCode}" class="field-validate-error">未知异常请联系管理员！</span>
+							<span th:if="${100001==errorCode}" class="field-validate-error">没有找到用户！</span>
+							<span th:if="${100101==errorCode}" class="field-validate-error">用户名或密码错误！</span>
+							<span th:if="${100102==errorCode}" class="field-validate-error">当前用户没有web登陆权限！</span>
+						</div>
+					</div>
+
+					<div class="layui-row">
+						<form class="layui-form" th:action="@{/repair/deivce/search}"
+							method="post" name="searchForm" lay-filter="searchFormFilter">
+							<div class="layui-row layui-col-space5">
+								<div class="layui-col-xs12 layui-col-sm12 layui-col-md2">
+									<select name="searchType" id="serarchFormSearchType"
+										lay-filter="searchTypeFilter" style="width: 100%;">
+										<option value="expressNumber" selected>快递单号</option>
+										<option value="deviceSn">设备SN</option>
+									</select>
+								</div>
+								<div class="layui-col-xs12 layui-col-sm12 layui-col-md8">
+									<input type="text" name="searchValue" placeholder="请输入快递单号"
+										lay-verify="required" autocomplete="off" class="layui-input"
+										style="width: 100%;">
+								</div>
+								<div class="layui-col-xs12 layui-col-sm12 layui-col-md2">
+									<button class="layui-btn" name="searchBtn" style="width: 100%;">
+										<i class="layui-icon layui-icon-search"></i>
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+
+					<div class="layui-row">
+						<div class="" style="margin-top: 30px; margin-bottom: 30px;">
+							<div style="margin-bottom: 10px;">
+								<span style="font-size: 18px; font-weight: 300;">查询结果：</span>
+							</div>
+							<div class="process-result-not-found layui-hide">没有找到相关信息，请稍等后再查询。</div>
+							<div class="process-result">
+								<span>无</span>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="layui-col-xs1 layui-col-md2">&nbsp;</div>
+			</div>
+		</div>	
+	
+	<script id="searchResultTpl" type="text/html">
+        <div class="layui-collapse" lay-accordion>
+
+        {{#  layui.each(d, function(index1, rp){ }}
+       <div class="layui-colla-item">
+            <h2 class="layui-colla-title">
+                                            维修编号：{{rp.serialNumber}}
+               <span class="layui-show-md layui-hide-xs" style="float:right">状态：{{rp.displayStatus}}&nbsp;&nbsp;&nbsp;&nbsp;更新时间：{{rp.updateTime}}</span>
+            </h2>
+            <div class="layui-colla-content
+                    {{#  if(index1 === 0){ }} 
+                    layui-show
+                    {{#  } }} 
+                ">
+                <span class="layui-show-xs-block layui-hide-md" style="">状态：{{rp.displayStatus}}</span>
+                <span class="layui-show-xs-block layui-hide-md" style="">更新时间：{{rp.updateTime}}</span>
+                <span style="display:none">寄修快递单号：{{rp.expressNumber}}（{{rp.expressName}}）</span>
+                <table class='layui-table'>
+                                        <colgroup>
+                                            <col width="120px"><col width="80px"><col>
+                                        </colgroup>
+                                        <thead>
+                                            <tr>  
+                                                <th>SN</th>
+                                                <th>机型</th>
+                                                <th>当前状态</th>
+                                            <tr>
+                                        </thead>
+                                        {{#  layui.each(rp.repairDevices, function(index, deviceItem){ }}
+                                             <tr> 
+                                                 <td>{{deviceItem.sn}}</td>
+                                                 <td>{{deviceItem.model}}</td>
+                                                 <td>{{deviceItem.displayStatus}}</td>
+                                             </tr>
+                                        {{#  }); }}
+                                    </table>
+            </div>
+       </div>
+        {{#  }); }}
+        </div>
+	</script>	
+	<script type="text/javascript" th:src="@{/static/layui/layui.js}"></script>
+	<script th:inline="javascript">
+	    var modulesPath = /*[[@{/static/js/modules/}]]*/ '/static/js/modules/';
+	    var jsVersion=[[${jsVersion}]];
+        layui.config({
+            base : modulesPath //你存放新模块的目录，注意，不是layui的模块目录
+            ,version : jsVersion
+        }).use('search'); //加载入口
+    </script>
+</body>
+</html>

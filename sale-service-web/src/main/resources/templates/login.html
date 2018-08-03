@@ -1,0 +1,142 @@
+<html>
+<head>
+<title>iData售后服务系统_登陆</title>
+<link rel="stylesheet" th:href="@{/static/layui/css/global.css}"></link>
+<link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"></link>
+<style type="text/css">
+.mw-login-top-user {
+	float: right;
+}
+
+.mw-login-top-user li a {
+	font-size: 16px;
+	color: #c2c2c2;
+}
+
+fieldset {
+	display: block;
+	-webkit-margin-start: 2px;
+	-webkit-margin-end: 2px;
+	-webkit-padding-before: 0.35em;
+	-webkit-padding-start: 0.75em;
+	-webkit-padding-end: 0.75em;
+	-webkit-padding-after: 0.625em;
+	min-width: -webkit-min-content;
+	border-width: 2px;
+	border-style: groove;
+	border-color: threedface;
+	border-image: initial;
+}
+
+.site-title fieldset {
+    border: none;
+    padding: 0;
+    border-top: 1px solid #eee;
+}
+
+.login-title fieldset {
+	border: none;
+	padding: 0;
+	/* 	#eee */
+	border-top: 1px solid #eee;
+}
+
+.login-title fieldset legend {
+	margin-left: 120px;
+	padding: 0 10px;
+	font-size: 22px;
+	font-weight: 300;
+}
+
+.login-block {
+	padding: 20px;
+	border: 1px solid #eee;
+}
+
+.login-form {
+	
+}
+
+.login-form .login-form-item {
+	margin-top: 20px;
+}
+
+.login-form .login-form-item:first-child {
+	margin-top: 0;
+}
+</style>
+<title>系统登录</title>
+</head>
+<body style="background-color: #eeeeee;">
+	<div class="layui-bg-black">
+		<div class="layui-main" style="height: 62px; line-height: 62px;">
+			<div style="width: 80%; margin-left: 10%; margin-right: 10%;">
+				<span class="layui-inline"
+					style="color: #f2f2f2; font-size: 19px; font-weight: blod;">盈达售后服务系统</span>
+				<ul class="layui-nav mw-login-top-user" style="">
+					<li class="layui-nav-item">
+					   <div><a th:href="@{/search}"><i class="layui-icon layui-icon-search" style="margin-right:6px"></i>返修进度查询 </a></div>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="layui-main" style="margin-top: 80px;">
+		<div
+			style="width: 40%; margin-left: 30%; margin-right: 30%; border: 0px solid red; padding: 20px; background-color: #fff;">
+
+			<span style="font-size: 22px; font-weight: 300;">用户登录</span>
+			<hr style="color: #aaa;">
+			<div style="height: 30px;">
+			    <span th:if="${100000==errorCode}" class="field-validate-error">未知异常请联系管理员！</span>
+				<span th:if="${100001==errorCode}" class="field-validate-error">没有找到用户！</span>
+				<span th:if="${100101==errorCode}" class="field-validate-error">用户名或密码错误！</span>
+				<span th:if="${100102==errorCode}" class="field-validate-error">当前用户没有web登陆权限！</span>
+			</div>
+
+			<form class="layui-form login-form" th:action="@{/login}" method="post">
+				<div class="login-form-item">
+					<input type="text" name="loginName" required lay-verify="required"
+						placeholder="请输入用户名称" autocomplete="off" class="layui-input"  th:value="${loginName}">
+				</div>
+				<div class="login-form-item">
+					<input type="password" name="password" required
+						lay-verify="required" placeholder="请输入密码" autocomplete="off"
+						class="layui-input" th:value="${password}"  >
+				</div>
+
+				<div class="login-form-item">
+					<input type="checkbox" name="keepSession" value="1" th:checked="${keepSession}"><label>7天内自动登录</label>
+				</div>
+
+				<div class="login-form-item">
+					<button class="layui-btn" style="width: 100%;" lay-submit
+						lay-filter="loginBtn">立即登录</button>
+				</div>
+				<div class="login-form-item">
+					<a style="float: right; color: #01AAED;" href="#">忘记密码?</a> <a
+						style="float: left" href="#">登录帮助</a>
+				</div>
+				<div style="clear: both;"></div>
+			</form>
+		</div>
+	</div>
+		
+	<div class="layui-footer footer footer-doc" style="margin-top:40px;">
+        <div class="layui-main">
+            <p>Copyright©2018 idatachina.com　粤ICP备17019056号-1</p>
+        </div>
+    </div>
+		
+	<script type="text/javascript" th:src="@{/static/layui/layui.js}"></script>
+	<script th:inline="javascript">
+	    var modulesPath = /*[[@{/static/js/modules/}]]*/ '/static/js/modules/';
+	    var jsVersion=[[${jsVersion}]];
+        layui.config({
+            base : modulesPath //你存放新模块的目录，注意，不是layui的模块目录
+            ,version : jsVersion
+        }).use('login'); //加载入口
+    </script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- status=debug 可以查看log4j的装配过程 -->
+<configuration status="off" monitorInterval="1800">
+	<properties>
+		<property name="LOG_HOME">/usr/local/tomcat/logs/s2</property>
+		<!-- 日志备份目录 -->
+		<property name="BACKUP_HOME">{LOG_HOME}/backup</property>
+	</properties>
+	<appenders>
+		<!-- 定义控制台输出 -->
+		<Console name="console" target="SYSTEM_OUT" follow="true">
+			<PatternLayout
+				pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n" />
+		</Console>
+		<!-- 程序员调试日志 -->
+		<RollingRandomAccessFile name="all_log"
+			fileName="${LOG_HOME}/all.log" filePattern="${BACKUP_HOME}/all.%d{yyyy-MM-dd-HH}.log">
+			<PatternLayout
+				pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="24"
+					modulate="true" />
+				<SizeBasedTriggeringPolicy size="128 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingRandomAccessFile>
+		<!-- 程序员调试日志 -->
+		<RollingRandomAccessFile name="debug_log"
+			fileName="${LOG_HOME}/debug.log" filePattern="${BACKUP_HOME}/debug.%d{yyyy-MM-dd-HH}.log">
+			<PatternLayout
+				pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n" />
+			<Filters>
+				<ThresholdFilter level="info" onMatch="DENY"
+					onMismatch="NEUTRAL" />
+				<ThresholdFilter level="debug" onMatch="ACCEPT"
+					onMismatch="NEUTRAL" />
+			</Filters>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="24"
+					modulate="true" />
+				<SizeBasedTriggeringPolicy size="128 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingRandomAccessFile>
+		<RollingRandomAccessFile name="info_log"
+			fileName="${LOG_HOME}/info.log" filePattern="${BACKUP_HOME}/info.%d{yyyy-MM-dd-HH}.log">
+			<PatternLayout
+				pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n" />
+			<Filters>
+				<ThresholdFilter level="warn" onMatch="DENY"
+					onMismatch="NEUTRAL" />
+				<ThresholdFilter level="info" onMatch="ACCEPT"
+					onMismatch="DENY" />
+			</Filters>
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="24"
+					modulate="true" />
+				<SizeBasedTriggeringPolicy size="128 MB" />
+			</Policies>
+			<DefaultRolloverStrategy max="10" />
+		</RollingRandomAccessFile>
+		<RollingRandomAccessFile name="error_log"
+			fileName="${LOG_HOME}/error.log" filePattern="${BACKUP_HOME}/error.%d{yyyy-MM-dd-HH}.log">
+			<PatternLayout
+				pattern="%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n" />
+			<Filters>
+				<ThresholdFilter level="warn" onMatch="ACCEPT"
+					onMismatch="DENY" />
+			</Filters>
+			<Policies>
+				<!-- 每24小时更新一次 -->
+				<TimeBasedTriggeringPolicy modulate="true"
+					interval="24" />
+				<SizeBasedTriggeringPolicy size="128 MB" />
+			</Policies>
+			<!-- 最多备份10个 -->
+			<DefaultRolloverStrategy max="10" />
+		</RollingRandomAccessFile>
+	</appenders>
+	<loggers>
+		<!-- 3rdparty Loggers -->
+		<logger name="org.springframework" level="info"></logger>
+		<logger name="org.thymeleaf" level="info"></logger>
+		<logger name="org.apache.http" level="info"></logger>
+		<logger name="org.apache.commons.beanutils" level="info"></logger>
+		<!-- Root Logger -->
+		<root level="info">
+			<appender-ref ref="info_log" />
+			<appender-ref ref="error_log" />
+		</root>
+	</loggers>
+</configuration> 
