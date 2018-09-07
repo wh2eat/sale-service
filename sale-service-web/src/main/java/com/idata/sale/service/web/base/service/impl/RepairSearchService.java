@@ -1,7 +1,6 @@
 package com.idata.sale.service.web.base.service.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -119,17 +118,19 @@ public class RepairSearchService implements IRepairSearchService {
     @Override
     public List<RepairPackageDbo> searchByExpressNumber(String expressNumber) {
 
-        RepairPackageDbo repairPackageDbo = repairPackageService.getByExpressName(expressNumber);
-        if (null == repairPackageDbo) {
+        List<RepairPackageDbo> repairPackageDbos = repairPackageService.getByExpressName(expressNumber);
+        if (CollectionUtils.isEmpty(repairPackageDbos)) {
             return null;
         }
 
-        List<RepairDeviceDbo> repairDeviceDbos = repairDeviceService
-                .getList4SearchByPacakgeId(repairPackageDbo.getId());
-        repairPackageDbo.setRepairDevices(repairDeviceDbos);
-        repairBackPackageService.setBackPackage(repairDeviceDbos);
+        for (RepairPackageDbo repairPackageDbo : repairPackageDbos) {
+            List<RepairDeviceDbo> repairDeviceDbos = repairDeviceService
+                    .getList4SearchByPacakgeId(repairPackageDbo.getId());
+            repairBackPackageService.setBackPackage(repairDeviceDbos);
+            repairPackageDbo.setRepairDevices(repairDeviceDbos);
+        }
 
-        return Arrays.asList(repairPackageDbo);
+        return repairPackageDbos;
     }
 
 }

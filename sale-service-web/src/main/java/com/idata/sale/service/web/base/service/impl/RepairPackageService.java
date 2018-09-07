@@ -152,7 +152,7 @@ public class RepairPackageService implements IRepairPackageService {
     }
 
     @Override
-    public RepairPackageDbo getByExpressName(String expressName) {
+    public List<RepairPackageDbo> getByExpressName(String expressName) {
         return repairPackageDao.getByExpressNumber(expressName);
     }
 

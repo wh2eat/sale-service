@@ -43,7 +43,7 @@ public class RepairPackageDao extends BaseDao<RepairPackageDbo> {
         return findList(sql, null);
     }
 
-    public RepairPackageDbo getByExpressNumber(String expressNumber) {
+    public List<RepairPackageDbo> getByExpressNumber(String expressNumber) {
 
         String sql = _select + getAllCloumnStrWithComma() + _from + getTableName() + _where + "express_number=?";
         Object[] values = new Object[] { expressNumber };
@@ -51,7 +51,7 @@ public class RepairPackageDao extends BaseDao<RepairPackageDbo> {
         List<RepairPackageDbo> repairPackageDbos = findList(sql, values);
         try {
             if (CollectionUtils.isNotEmpty(repairPackageDbos)) {
-                return repairPackageDbos.get(0);
+                return repairPackageDbos;
             }
         }
         finally {

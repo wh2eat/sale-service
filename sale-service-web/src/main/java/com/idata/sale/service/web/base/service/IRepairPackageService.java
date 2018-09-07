@@ -12,7 +12,7 @@ public interface IRepairPackageService {
 
     public RepairPackageDbo get(String serialNumber);
 
-    public RepairPackageDbo getByExpressName(String expressName);
+    public List<RepairPackageDbo> getByExpressName(String expressName);
 
     public void add(RepairPackageDbo repairPackageDbo) throws ServiceException;
 
