@@ -300,12 +300,12 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
 
                 crow = crow + 1;
 
-                String detectId = (String) detectMap.get("id");
+                String detectId = String.valueOf(detectMap.get("id"));
 
                 Map<String, Object> quotationMap = null;
                 if (CollectionUtils.isNotEmpty(quotationMaps)) {
                     for (Map<String, Object> qMap : quotationMaps) {
-                        String diid = (String) qMap.get("detect_invoice_id");
+                        String diid = String.valueOf(qMap.get("detect_invoice_id"));
                         if (diid.equals(detectId)) {
                             quotationMap = qMap;
                         }
@@ -326,7 +326,13 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
 
                 cell = row.createCell(3);
                 cell.setCellType(Cell.CELL_TYPE_STRING);
-                cell.setCellValue((String) rdMap.get("manufacture_time"));
+                Object mto = rdMap.get("manufacture_time");
+                if (null == mto) {
+                    cell.setCellValue("");
+                }
+                else {
+                    cell.setCellValue(TimeUtil.formatByYYYYmmDDhhMMSS((Date) mto));
+                }
 
                 cell = row.createCell(4);
                 cell.setCellType(Cell.CELL_TYPE_STRING);
@@ -352,7 +358,13 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
 
                 cell = row.createCell(8);
                 cell.setCellType(Cell.CELL_TYPE_STRING);
-                cell.setCellValue((String) rdMap.get("create_time"));
+                Object cto = rdMap.get("create_time");
+                if (null == cto) {
+                    cell.setCellValue("");
+                }
+                else {
+                    cell.setCellValue(TimeUtil.formatByYYYYmmDDhhMMSS((Date) cto));
+                }
 
                 cell = row.createCell(9);
                 cell.setCellType(Cell.CELL_TYPE_STRING);
@@ -364,12 +376,24 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
 
                 cell = row.createCell(11);
                 cell.setCellType(Cell.CELL_TYPE_STRING);
-                cell.setCellValue((String) rdMap.get("detect_start_time"));
+                Object dsto = rdMap.get("detect_start_time");
+                if (dsto == null) {
+                    cell.setCellValue("");
+                }
+                else {
+                    cell.setCellValue(TimeUtil.formatByYYYYmmDDhhMMSS((Date) dsto));
+                }
 
                 // 返回日期
                 cell = row.createCell(12);
                 cell.setCellType(Cell.CELL_TYPE_STRING);
-                cell.setCellValue((String) rdMap.get("repair_back_pacakge_send_time"));
+                Object psto = rdMap.get("repair_back_pacakge_send_time");
+                if (null == psto) {
+                    cell.setCellValue("");
+                }
+                else {
+                    cell.setCellValue(TimeUtil.formatByYYYYmmDDhhMMSS((Date) psto));
+                }
 
                 // 返回单号
                 cell = row.createCell(13);
@@ -397,14 +421,14 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
                 // 付款类型
                 cell = row.createCell(17);
                 cell.setCellType(Cell.CELL_TYPE_STRING);
-                String payType = (String) rdMap.get("pay_type");
+                String payType = String.valueOf(rdMap.get("pay_type"));
                 cell.setCellValue(null == payType ? "" : ("1".equals(payType) ? "月结" : "现付"));
 
-                String charge = (String) rdMap.get("charge");
+                String charge = String.valueOf(rdMap.get("charge"));
                 // 是否付费
                 cell = row.createCell(18);
                 cell.setCellType(Cell.CELL_TYPE_STRING);
-                String payStatus = (String) rdMap.get("pay_status");
+                String payStatus = String.valueOf(rdMap.get("pay_status"));
                 cell.setCellValue("1".equals(charge) ? ("9".equals(payStatus) ? "已付款" : "未付款") : "");
 
                 // 付款金额

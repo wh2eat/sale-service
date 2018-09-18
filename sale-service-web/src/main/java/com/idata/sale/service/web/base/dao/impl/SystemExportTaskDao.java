@@ -96,6 +96,8 @@ public class SystemExportTaskDao extends BaseDao<SystemExportTaskDbo> {
             }
         }
 
+        sql += " order by create_time desc";
+
         try {
             return findListByPage(sql, values.toArray(), pageInfo);
         }
