@@ -19,6 +19,8 @@ public class RepairDeviceQuotationInvoiceDbo {
     @Column()
     private Integer detectInvoiceId;
 
+    private Integer isQuote;
+
     @Column()
     private String item;
 
@@ -194,6 +196,14 @@ public class RepairDeviceQuotationInvoiceDbo {
                 + status + ", time=" + time + ", createTime=" + createTime + ", updateTime=" + updateTime
                 + ", createUserId=" + createUserId + ", confirmStatus=" + confirmStatus + ", confirmRemark="
                 + confirmRemark + "]";
+    }
+
+    public Integer getIsQuote() {
+        return isQuote;
+    }
+
+    public void setIsQuote(Integer isQuote) {
+        this.isQuote = isQuote;
     }
 
 }

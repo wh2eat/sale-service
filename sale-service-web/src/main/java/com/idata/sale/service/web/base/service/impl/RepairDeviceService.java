@@ -390,6 +390,8 @@ public class RepairDeviceService implements IRepairDeviceService {
             if (CollectionUtils.isNotEmpty(waitRepairList)) {
                 repairDeviceDbo.setStatus(RepairStatus.RepairWait.getCode());
                 repairDeviceDbo.setCharge(Device.ChargeNot.getCode());
+                repairDeviceDbo.setCostTotal("0");
+                repairDeviceDbo.setLaborCosts("0");
                 repairDeviceDao.updateRepairDeviceStatus(waitRepairList, repairDeviceDbo);
             }
         }
@@ -555,7 +557,7 @@ public class RepairDeviceService implements IRepairDeviceService {
             payStatus = Device.PayFinish.getCode();
             payFinishDate = new Date(System.currentTimeMillis());
         }
-        else if (!(Device.PayTypeCash.getCode() == dbRepairDeviceDbo.getPayType().intValue())) {
+        else if (Device.PayTypeMonth.getCode() == dbRepairDeviceDbo.getPayType().intValue()) {
             nextStatus = RepairStatus.RepairWait.getCode();
         }
         dbRepairDeviceDbo = null;

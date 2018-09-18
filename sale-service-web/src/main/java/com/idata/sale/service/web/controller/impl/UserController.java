@@ -106,6 +106,9 @@ public class UserController extends BaseController {
             }
             else if ("repairDeviceManageReviews".equals(target)) {
                 indexNavItem = "rDeviceManageReviewList";
+                if (null != rdid && StringUtils.isNotEmpty(sn)) {
+                    return "user/repairDeviceManageReviewDetectInvoiceList";
+                }
                 return "user/repairDeviceManageReviewList";
             }
             else if ("repairDeviceManageQuotations".equals(target)) {
@@ -165,6 +168,10 @@ public class UserController extends BaseController {
             else if ("systemCustomers".equals(target)) {
                 indexNavItem = "sDataCustomerList";
                 return "user/systemCustomerList";
+            }
+            else if ("systemRepairDeviceExports".equals(target)) {
+                indexNavItem = "sDataRepairDeviceExportList";
+                return "user/systemRepairDeviceExportList";
             }
 
             // else if ("repairDeviceManageBacks".equals(target)) {

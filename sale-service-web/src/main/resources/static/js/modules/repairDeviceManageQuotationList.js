@@ -55,28 +55,33 @@ layui.define([ 'jquery', 'layer','laydate', 'table' ,'element','layout','aform',
             },{
                     field : 'repairInvoice',
                     title : '维修单号',
+                    width : '12%',
                     templet: function(d){
                         return d.repairInvoice.serialNumber;
                     }
                 },{
+                    field : 'endCustomerName',
+                    title : '终端客户名称',
+                    width : '12%'                        
+                },{
                     field : 'sn',
-                    title : 'SN'
-                        
+                    title : 'SN',
+                    width : '10%',                        
                 },{
                     field:'warrantyType',
                     title:"保修类型",
+                    width : '10%',
                     templet: function(d){
                         return aDevice.getWarrantyText(d.warrantyType);
                     }
                 },{
                     field : 'model',
-                    title : '机型'
-                },{
-                    field : 'endCustomerName',
-                    title : '终端客户名称'
+                    title : '机型',
+                    width : '10%'
                 },{
                     field : 'detectUser',
                     title : '维修人',
+                    width : '10%',
                     templet: function(d){
                         var detectUser = d.detectUser;
                         if(undefined!==detectUser&&null!==detectUser){
@@ -87,6 +92,7 @@ layui.define([ 'jquery', 'layer','laydate', 'table' ,'element','layout','aform',
                 },{
                     field : 'quotationUser',
                     title : '报价人',
+                    width : '10%',
                     templet: function(d){
                         var quotationUser = d.quotationUser;
                         if(undefined!==quotationUser&&null!==quotationUser){
@@ -97,12 +103,11 @@ layui.define([ 'jquery', 'layer','laydate', 'table' ,'element','layout','aform',
                 },{
                     field : 'costTotal',
                     title : '总费用',
+                    width : '12%',
                     templet: function(d){
                         return d.costTotal+"（"+aDevice.getCurrency(d.currency)+"）";
                     }                       
                 },{
-                    fixed: 'right', 
-                    width:60, 
                     align:'center', 
                     toolbar: '#repairDeviceManageListTableToolTpl'
                 }  ] ],

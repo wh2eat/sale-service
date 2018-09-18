@@ -104,7 +104,10 @@ layui.define([ 'jquery', 'layer','aUser', 'table','laydate','aSystemCustomer' ,'
                 },{
                     field : 'createTime',
                     title : "送修时间",
-                    width : 160
+                    width : 80
+                },{
+                    field:'remark',
+                    title:"备注"
                 } ] ],
                 url : repairDeviceTableUrl,
                 method : "POST",
@@ -183,10 +186,10 @@ layui.define([ 'jquery', 'layer','aUser', 'table','laydate','aSystemCustomer' ,'
             selectDeviceIds = [];
             for(var ii=0;ii<length;ii++){
                 var dd = datas[ii];
-                if(dd.repairPackageId!==repairPackageId){
-                    layer.msg("创建返客包时，只能选择相同维修包内的设备!");
-                    return false;
-                }
+//                if(dd.repairPackageId!==repairPackageId){
+//                    layer.msg("创建返客包时，只能选择相同维修包内的设备!");
+//                    return false;
+//                }
                 if(dd.status!=70){
                     layer.msg("创建返客包时，设备状态必须全部为：待返客!");
                     return false;
@@ -235,12 +238,12 @@ layui.define([ 'jquery', 'layer','aUser', 'table','laydate','aSystemCustomer' ,'
     }
     
     
-    form.on('submit(popuRepairBackPackageFormSumitFilter)',function(data){
+    $("#repairBackPackageForm").submit(function(){
         
-        $("button[lay-filter='repairBackPackageFormSumitFilter']").attr("disabled","disabled");
+        $("button[type='submit']").attr("disabled","disabled");
         $("button[lay-filter='repairBackPackageFormRestFilter']").attr("disabled","disabled");
         
-        var repairBackPackageInfo = data.field
+        var repairBackPackageInfo = aform.toObject($("#repairBackPackageForm"));
         var userUdid = aUser.getId();
         
         $.ajax({

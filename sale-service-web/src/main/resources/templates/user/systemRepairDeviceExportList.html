@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout">
+<head>
+</head>
+<body class="layui-layout-body">
+	<div layout:fragment="popup">
+	   
+		<div id="systemRepairDeviveExportPage" lay-filter="systemRepairDeviveExportPageFilter"
+			 fitWidth="800" fitHeight="360" class="sys-popup-page">
+			<div style="margin-right: 40px;">
+				<form class="layui-form" action="" id="systemRepairDeviceExportForm"
+					lay-filter="systemRepairDeviceExportFormFilter">
+					
+					<div class="layui-form-item">
+                        <label class="layui-form-label">导出名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="exportName"
+                                placeholder="请输入导出任务名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+					
+					<div class="layui-form-item">
+						<label class="layui-form-label">开始日期</label>
+						<div class="layui-input-block">
+							<input type="text" id="srdeStartTime" name="startTime"
+								placeholder="请输入开始日期" autocomplete="off" class="layui-input" readonly="readonly">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">结束日期</label>
+						<div class="layui-input-block">
+							<input type="text" id="srdeEndTime" name="endTime" 
+								placeholder="请输入结束日期" autocomplete="off" class="layui-input" readonly="readonly">
+						</div>
+					</div>
+					
+					<div class="layui-form-item">
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="remark"
+                                placeholder="请输入备注" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"></label>
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="systemRepairDeviceExportFormSubmitFilter">提交</button>
+                        </div>
+                    </div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div layout:fragment="content">
+
+		<div class="layui-row" style="margin-top:20px;">
+			<div class="layui-col-md4" align="left">
+				<span>导出任务列表</span>
+			</div>
+			<div class="layui-col-md4 layui-col-md-offset4" align="right">
+				<div class="layui-btn-group">
+					<button class="layui-btn layui-btn-sm" name="addExportTaskBtn">添加导出</button>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="layui-row">
+            <form class="layui-form" name="repairDeviceExportSearchForm" 
+                 lay-filter="repairDeviceExportSearchFormFilter">
+                <table class="table-search">
+                    <tr>
+                        <td>任务名称</td>
+                        <td>备注</td>
+                        <td>创建时间</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="taskName" class="layui-input"></td>
+                        <td><input type="text" name="remark" class="layui-input">
+                        </td>
+                        <td><input type="text" id="searchCreateTime" readonly="readonly" name="createTime" class="layui-input">
+                        </td>
+                        <td align="right">
+                            <button lay-submit lay-filter="repairDeviceExportSearchFormSubmitFilter" class="layui-btn layui-btn-sm layui-btn-list-search">搜索</button>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+        <div>
+            <script type="text/html" id="repairDeviceExportTableToolTpl">
+                {{#  if(d.status == 9){  }}
+                    <a class="layui-btn layui-btn-xs" target="_blank" th:href="@{/download?id={{d.downloadId}}}">下载</a>        
+                {{#  }else{ }}
+                    <a class="layui-btn layui-btn-xs layui-btn-disabled" lay-event="download">下载</a> 
+                {{#  } }}
+            </script>
+            <table id="repairDeviceExportListTable" class="layui-table layui-hide"
+                lay-filter="repairDeviceExportListTableFilter">
+            </table>
+        </div>
+	</div>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+            var modulesPath = /*[[@{/static/js/modules/}]]*/'/static/js/modules/';
+            var jsVersion=[[${jsVersion}]];
+            layui.config({
+                base : modulesPath
+                ,version : jsVersion
+            //你存放新模块的目录，注意，不是layui的模块目录
+            }).use('systemRepairDeviceExportList'); //加载入口
+        </script>
+	</th:block>
+</body>
+</html>

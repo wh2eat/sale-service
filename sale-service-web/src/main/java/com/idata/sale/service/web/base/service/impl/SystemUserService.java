@@ -297,9 +297,6 @@ public class SystemUserService implements ISystemUserService {
         systemUserDao.deleteById(id);
     }
 
-    public static void main(String[] args) {
-    }
-
     private String getUserEncryptKey(Integer userId, String udid) {
 
         String all = userId + "&" + udid;
@@ -386,6 +383,15 @@ public class SystemUserService implements ISystemUserService {
         userDbos.clear();
         userDbos = null;
 
+    }
+
+    public static void main(String[] args) {
+        Integer userId = 1;
+        String udid = "";
+
+        String all = userId + "&" + udid;
+        all = DigestUtils.md5Hex(all);
+        String key = all.substring(0, 4) + all.substring(all.length() - 4, all.length());
     }
 
 }

@@ -48,25 +48,33 @@ layui.define([ 'jquery', 'layer','laydate', 'table' ,'element','layout','aform',
             cols : [ [{checkbox:true},{
                     field : 'repairInvoice',
                     title : '维修单号',
+                    width : '10%',
                     templet: function(d){
                         return d.repairInvoice.serialNumber;
                     }
                 },{
+                    field : 'endCustomerName',
+                    title : '终端客户名称',
+                    width : '10%'                        
+                },{
                     field : 'sn',
-                    title : 'SN'
-                        
+                    title : 'SN',
+                    width : '10%'
                 },{
                     field:'warrantyType',
                     title:"保修类型",
+                    width : '8%',
                     templet: function(d){
                         return aDevice.getWarrantyText(d.warrantyType);
                     }
                 },{
                     field : 'model',
-                    title : '机型'
+                    title : '机型',
+                    width : '8%',
                 },{
                     field : 'detectUser',
                     title : '维修人',
+                    width : '8%',
                     templet: function(d){
                         var detectUser = d.detectUser;
                         if(undefined!==detectUser&&null!==detectUser){
@@ -78,7 +86,6 @@ layui.define([ 'jquery', 'layer','laydate', 'table' ,'element','layout','aform',
                 ,{
                     field : 'detectInvoices',
                     title : '检测报告预览',
-                    width : 300,
                     templet: function(d){
                         var detectInvoices = d.detectInvoices;
                         if (undefined ==detectInvoices|| null==detectInvoices) {

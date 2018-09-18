@@ -1,7 +1,9 @@
 package com.idata.sale.service.web.base.dao.impl;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -194,6 +196,36 @@ public class RepairPackageDao extends BaseDao<RepairPackageDbo> {
             sql = null;
             values = null;
         }
+
+    }
+
+    public Map<String, Map<String, Object>> getIdMMap(Set<String> repairPackageIds) throws SQLException {
+
+        StringBuilder sql = new StringBuilder("select ").append(getAllCloumnStrWithComma()).append(" from ")
+                .append(getTableName()).append(" where id in(");
+        for (String rpid : repairPackageIds) {
+            sql.append(rpid).append(",");
+        }
+        sql.append(0).append(")");
+
+        List<Map<String, Object>> maps = find(sql.toString(), null);
+
+        if (CollectionUtils.isNotEmpty(maps)) {
+            Map<String, Map<String, Object>> idMap = new HashMap<>();
+            for (Map<String, Object> map : maps) {
+                Object idObj = map.get("id");
+                if (null != idObj) {
+                    idMap.put(String.valueOf(idObj), map);
+                }
+            }
+
+            maps.clear();
+            maps = null;
+
+            return idMap;
+        }
+
+        return null;
 
     }
 

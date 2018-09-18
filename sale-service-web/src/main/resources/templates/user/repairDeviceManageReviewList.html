@@ -22,6 +22,7 @@
                     lay-filter="repairDeviceSearchTableFilter">
                 <tr>
                     <td>维修单编号</td>
+                    <td>终端客户名称</td>
                     <td>设备sn</td>
                     <td>送修时间</td>
                     <td></td>
@@ -32,6 +33,9 @@
                     </td>
                     <td>
                         <input type="text" name="sn" class="layui-input">
+                    </td>
+                    <td>
+                        <input type="text" name="endCustomerName" class="layui-input">
                     </td>
                     <td>
                         <input type="text" id="deviceSearch4DeliveryTime" name="deliveryTime" readonly class="layui-input">
@@ -54,7 +58,7 @@
             </a>
             <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="review-detail" title="审核详情">
                 <i class="layui-icon layui-icon-form" style="font-size: 30px; color: #fff;font-weight:bold;"></i>
-            </a>
+            </a>            
         </script>
 		<table id="repairDeviceManageListTable" class="layui-table layui-hide"
 			lay-filter="repairDeviceManageListTableFilter">

@@ -42,27 +42,33 @@ layui.define([ 'jquery', 'layer', 'table','laydate' ,'element','layout','aform',
             limits:[10,20,50,100],
             cols : [ [
                 {checkbox:true},{
+                    field:'expressNumber',
+                    title:"快递单号",
+                    width:'10%'
+                },{
+                    field:'endCustomerName',
+                    title:"终端客户名称",
+                    width:'10%'
+                },{
                     field : 'sn',
                     title : 'SN',
-                    width : 120
+                    width:'10%'
                         
                 },{
                     field : 'model',
                     title : '机型',
-                    width : 160
+                    width:'8%'
                 },{
                     field : 'status',
                     title : '状态',
-                    width : 160,
+                    width:'8%',
                     templet: function(d){
                         return aRepairStatus.getDisplayText(d.status);
                     }
                 },{
-                    field:'endCustomerName',
-                    title:"终端客户名称"
-                },{
                     field:'repairPackage',
                     title:"联系人",
+                    width:'8%',
                     templet: function(d){
                         var rp = d.repairPackage;
                         if(undefined !==rp&& null!==rp){
@@ -73,6 +79,7 @@ layui.define([ 'jquery', 'layer', 'table','laydate' ,'element','layout','aform',
                 },{
                     field:'repairPackage',
                     title:"联系电话",
+                    width:'8%',
                     templet: function(d){
                         var rp = d.repairPackage;
                         if(undefined !==rp&& null!==rp){
@@ -83,6 +90,7 @@ layui.define([ 'jquery', 'layer', 'table','laydate' ,'element','layout','aform',
                 },{
                     field:'repairPackage',
                     title:"联系地址",
+                    width:'8%',
                     templet: function(d){
                         var rp = d.repairPackage;
                         if(undefined !==rp&& null!==rp){
@@ -96,6 +104,7 @@ layui.define([ 'jquery', 'layer', 'table','laydate' ,'element','layout','aform',
                 },{
                     field : 'detectUser',
                     title : '维修人',
+                    width:'8%',
                     templet: function(d){
                         var detectUser = d.detectUser;
                         if(undefined!==detectUser&&null!==detectUser){
@@ -106,6 +115,7 @@ layui.define([ 'jquery', 'layer', 'table','laydate' ,'element','layout','aform',
                 },{
                     field : 'quotationUser',
                     title : '报价人',
+                    width:'8%',
                     templet: function(d){
                         var quotationUser = d.quotationUser;
                         if(undefined!==quotationUser&&null!==quotationUser){

@@ -32,6 +32,8 @@ public class RepairDeviceSearchService {
     @RequestMapping(path = "process", method = RequestMethod.POST)
     public Object searchProcess(@RequestBody RepairDeviceProcessDto processDto) throws RestException, ServiceException {
 
+        LOGGER.info("[][searchProcess][" + processDto + "]");
+
         String searchType = processDto.getSearchType();
 
         if (StringUtils.isEmpty(searchType)) {

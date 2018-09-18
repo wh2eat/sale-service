@@ -698,6 +698,12 @@ public abstract class BaseDao<T> implements IBaseDao<T> {
 
     List findListByPage(Class<?> clas, String sql, String coutField, Object[] params, PageInfo pageInfo,
             boolean setPage) throws BaseDaoException {
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("sql:" + sql);
+            logger.debug("params:" + (null == params ? "null" : Arrays.toString(params)));
+        }
+
         if (null != pageInfo) {
             if (setPage) {
                 setPage(sql, coutField, params, pageInfo);

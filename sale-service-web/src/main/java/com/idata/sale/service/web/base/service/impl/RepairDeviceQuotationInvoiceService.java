@@ -1,6 +1,7 @@
 package com.idata.sale.service.web.base.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -169,6 +170,17 @@ public class RepairDeviceQuotationInvoiceService implements IRepairDeviceQuotati
         quotationInvoiceDbos.clear();
         quotationInvoiceDbos = null;
 
+    }
+
+    @Override
+    public void delete(List<Integer> repairDeviceDetectInvoiceIds) throws ServiceException {
+        List<Integer> ids = repairDeviceQuotationInvoiceDao.getIds(repairDeviceDetectInvoiceIds);
+        if (CollectionUtils.isEmpty(ids)) {
+            return;
+        }
+        repairDeviceQuotationInvoiceDao.delete(ids);
+        LOGGER.info("[][delete by repairDeviceDetectInvoiceIds][ quotationInvoice ids:" + Arrays.toString(ids.toArray())
+                + "]");
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
@@ -49,6 +50,10 @@ public class WebMvcConfiguration extends WebMvcConfigurerAdapter {
     public HttpMessageConverters fastJsonHttpMessageConverters() {
         // 1.需要先定义一个converters转换消息的对象
         FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
+
+        List<MediaType> supportMediaTypeList = new ArrayList<>();
+        supportMediaTypeList.add(MediaType.APPLICATION_JSON_UTF8);
+        fastConverter.setSupportedMediaTypes(supportMediaTypeList);
 
         // 2.添加fastjson的配置信息，比如: 是否需要格式化返回的json数据
         FastJsonConfig fastJsonConfig = new FastJsonConfig();

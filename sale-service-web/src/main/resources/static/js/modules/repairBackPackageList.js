@@ -237,15 +237,12 @@ layui.define([ 'jquery', 'layer', 'table' ,'element','layout','aform','apopup','
         });
     }
     
-    form.on('submit(repairBackPackageFormSumitFilter)',function(data){
+    $("#repairBackPackageForm").submit(function(){
         
-        $("button[lay-filter='repairBackPackageFormSumitFilter']").attr("disabled","disabled");
+        $("button[type='submit']").attr("disabled","disabled");
         $("button[lay-filter='repairBackPackageFormRestFilter']").attr("disabled","disabled");
         
-        alog.d('repairBackPackageFormSumitFilter');
-        alog.d(data);
-        alog.d(data.field);
-        var repairBackPackageInfo = data.field;
+        var repairBackPackageInfo = aform.toObject($("#repairBackPackageForm"));
         var userUdid = aUser.getId();
         
         $.ajax({

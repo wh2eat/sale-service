@@ -194,6 +194,11 @@
 									th:href="@{/index(target='systemCustomers')}"
 									name="sDataCustomerList">联系人列表</a>
 							</dd>
+							<dd th:if="${session.loginUser.type==10}" th:class="'sDataRepairDeviceExportList' == ${indexNavItem} ? layui-this">
+                                <a class="sv-button-load-content"
+                                    th:href="@{/index(target='systemRepairDeviceExports')}"
+                                    name="sDataCustomerList">维修报表导出</a>
+                            </dd>
 						</dl>
 					</li>
 					<li

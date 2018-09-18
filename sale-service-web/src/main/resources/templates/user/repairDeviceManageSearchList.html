@@ -25,7 +25,7 @@
                     <td>送修快递单号</td>
                     <td>终端客户名称</td>
                     <td>设备sn</td>
-                    <td>送修时间</td>
+                    <td>返客快递单号</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -39,7 +39,7 @@
                         <input type="text" name="sn" class="layui-input">
                     </td>
                     <td>
-                        <input type="text" id="deviceSearch4DeliveryTime" name="deliveryTime" readonly class="layui-input">
+                        <input type="text"  name="backExpressNumber" class="layui-input">
                     </td>
                     <td>
                         <button name="repairDeviceSearchBtn" class="layui-btn layui-btn-sm">
@@ -72,6 +72,7 @@
                         <th>送修日期</th>
                         <th>是否报价</th>
                         <th>金额</th>
+                        <th>支付状态</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -107,6 +108,21 @@
                                 <td {{rowSpanText}}>{{rd.createTime}}</td>
                                 <td {{rowSpanText}}>{{layui.aDevice.isCharge(rd.charge)}}</td>
                                 <td {{rowSpanText}}>{{layui.aDevice.formatCostTotal(rd)}}</td>
+                                <td {{rowSpanText}}>
+                                {{#  if(rd.charge==0){ }}
+                                                                                    免费维修
+                                {{#    }else{ }}
+                                {{#        if(0==rd.payStatus){ }}
+                                                                                            收费维修(未支付)
+                                {{#        }else if(1==rd.payStatus){ }}
+                                                                                            收费维修(用户拒绝)
+                                {{#        }else if(9==rd.payStatus){ }}
+                                                                                            收费维修(已支付)
+                                {{#        }else{ }}
+                                                                                            处理中
+                                {{#        } }}
+                                {{#     } }}
+                                </td>
                             </tr>
 
                             {{#  if(rd.detectInvoices!==undefined && rd.detectInvoices!==null && rd.detectInvoices.length>1){ }}

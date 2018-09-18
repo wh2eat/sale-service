@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -123,6 +124,16 @@ public class RepairDeviceDao extends BaseDao<RepairDeviceDbo> {
             if (null != deviceDbo.getLessThanStatus()) {
                 sql += _and + "status<?";
                 values.add(deviceDbo.getLessThanStatus());
+            }
+
+            if (StringUtils.isNotEmpty(deviceDbo.getExpressNumber())) {
+                sql += _and + "locate(?,express_number)>0";
+                values.add(deviceDbo.getExpressNumber());
+            }
+
+            if (StringUtils.isNotEmpty(deviceDbo.getEndCustomerName())) {
+                sql += _and + "locate(?,end_customer_name)>0";
+                values.add(deviceDbo.getEndCustomerName());
             }
 
             String sn = deviceDbo.getSn();
@@ -468,6 +479,16 @@ public class RepairDeviceDao extends BaseDao<RepairDeviceDbo> {
                 values.add(repairDevice.getResult());
             }
 
+            if (null != repairDevice.getLaborCosts()) {
+                sql += ",labor_costs=? ";
+                values.add(repairDevice.getLaborCosts());
+            }
+
+            if (null != repairDevice.getCostTotal()) {
+                sql += ",cost_total=? ";
+                values.add(repairDevice.getCostTotal());
+            }
+
             sql += "where id=?";
 
             if (LOGGER.isDebugEnabled()) {
@@ -591,6 +612,32 @@ public class RepairDeviceDao extends BaseDao<RepairDeviceDbo> {
             sql = null;
             values = null;
         }
+    }
+
+    public int count(Date start, Date end) {
+
+        String sql = "select count(id) from repair_device where create_time >='"
+                + TimeUtil.formatByYYYYmmDDhhMMSS(start) + "' and create_time <='"
+                + TimeUtil.formatByYYYYmmDDhhMMSS(end) + "'";
+
+        return (int) count(sql, null);
+    }
+
+    public List<Map<String, Object>> getMapList(String startTime, String endTime, int pageNum, int pageSize) {
+
+        String sql = "select " + getAllCloumnStrWithComma() + " from " + getTableName()
+
+                + " where create_time >= '" + startTime + "' and create_time<='" + endTime + "' limit "
+
+                + (pageNum - 1) * pageSize + "," + pageSize;
+
+        try {
+            return find(sql, null);
+        }
+        finally {
+            sql = null;
+        }
+
     }
 
 }

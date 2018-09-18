@@ -1,6 +1,7 @@
 package com.idata.sale.service.web.util;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -36,6 +37,28 @@ public class TimeUtil {
         synchronized (format_yyyyMMdd) {
             return format_yyyyMMdd.format(date);
         }
+    }
+
+    public static String getNowByYmdFormat() {
+        synchronized (format_yyyyMMdd) {
+            return format_yyyyMMdd.format(new Date(System.currentTimeMillis()));
+        }
+    }
+
+    public static Date getNowDate() {
+        return new Date(System.currentTimeMillis());
+    }
+
+    public static Date parseDateByYYYYmmDDhhMMSS(String dateStr) {
+        synchronized (format_yyyyMMddHHmmss) {
+            try {
+                return format_yyyyMMddHHmmss.parse(dateStr);
+            }
+            catch (ParseException e) {
+                return null;
+            }
+        }
+
     }
 
 }

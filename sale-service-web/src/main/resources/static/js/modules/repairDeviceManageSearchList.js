@@ -49,27 +49,9 @@ layui.define([ 'jquery', 'layer', 'laytpl','table','laydate' ,'element','layout'
             limits:[10,20,50,100],
             cols : [ [
                 {checkbox:true},{
-                    field : 'sn',
-                    title : 'SN',
-                    width : 120
-                        
-                },{
-                    field : 'model',
-                    title : '机型',
-                    width : 140
-                },{
-                    field : 'status',
-                    title : '状态',
-                    width : 140,
-                    templet: function(d){
-                        return aRepairStatus.getDisplayText(d.status);
-                    }
-                },{
-                    field : 'endCustomerName',
-                    title : '终端客户名称'
-                },{
                     field : 'repairPacakge',
                     title : '送修快递单号',
+                    width : '12%',
                     templet: function(d){
                         var repairPackage = d.repairPackage;
                         if(undefined!==repairPackage&&null!==repairPackage){
@@ -78,22 +60,28 @@ layui.define([ 'jquery', 'layer', 'laytpl','table','laydate' ,'element','layout'
                         return "";
                     }
                 },{
-                    field : 'repairBackPackage',
-                    title : '返客快递单号',
+                    field : 'endCustomerName',
+                    title : '终端客户名称',
+                    width : '12%'
+                },{
+                    field : 'sn',
+                    title : 'SN',
+                    width : '10%'
+                },{
+                    field : 'model',
+                    title : '机型',
+                    width : '10%'
+                },{
+                    field : 'status',
+                    title : '状态',
+                    width : '10%',
                     templet: function(d){
-                        var repairBackPackage = d.repairBackPackage;
-                        if(undefined!==repairBackPackage&&null!==repairBackPackage){
-                            return repairBackPackage.expressNumber+"("+repairBackPackage.expressName+")";
-                        }
-                        return '';
+                        return aRepairStatus.getDisplayText(d.status);
                     }
-                }, {
-                    field : 'createTime',
-                    title : '送修日期',
-                    width : 180
                 },{
                     field : 'detectUser',
                     title : '维修人',
+                    width : '8%',
                     templet: function(d){
                         var detectUser = d.detectUser;
                         if(undefined!==detectUser&&null!==detectUser){
@@ -104,6 +92,7 @@ layui.define([ 'jquery', 'layer', 'laytpl','table','laydate' ,'element','layout'
                 },{
                     field : 'quotationUser',
                     title : '报价人',
+                    width : '8%',
                     templet: function(d){
                         var quotationUser = d.quotationUser;
                         if(undefined!==quotationUser&&null!==quotationUser){
@@ -111,6 +100,20 @@ layui.define([ 'jquery', 'layer', 'laytpl','table','laydate' ,'element','layout'
                         }
                         return "";
                     }                    
+                },{
+                    field : 'repairBackPackage',
+                    title : '返客快递单号',
+                    width : '12%',
+                    templet: function(d){
+                        var repairBackPackage = d.repairBackPackage;
+                        if(undefined!==repairBackPackage&&null!==repairBackPackage){
+                            return repairBackPackage.expressNumber+"("+repairBackPackage.expressName+")";
+                        }
+                        return '';
+                    }
+                }, {
+                    field : 'createTime',
+                    title : '送修日期'
                 }  ] ],
                 url : repairDeviceTableUrl,
                 method : "POST",

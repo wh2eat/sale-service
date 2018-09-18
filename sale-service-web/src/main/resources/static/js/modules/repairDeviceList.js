@@ -204,7 +204,6 @@ layui.define([ 'jquery', 'layer', 'table','laydate' ,'element','layout','aform',
     //执行初始化
     init();
     
-    
     var repairDeviceTableUrl='api/browser/repair/device/list';
     
     table.render({
@@ -217,14 +216,22 @@ layui.define([ 'jquery', 'layer', 'table','laydate' ,'element','layout','aform',
         limits:[10,20,50,100],
         cols : [ [ {
             title : 'ID',
-            fixed : 'left',
-            width : 60,
+            width : 40,
             templet: function(row){
                 return row.LAY_INDEX;
               }
         }, {
+            field : 'expressNumber',
+            title : '快递单号',
+            width : '10%'
+        }, {
+            field : 'endCustomerName',
+            title : '终端客户名称',
+            width : '10%'
+        }, {
             field : 'sn',
-            title : 'SN'
+            title : 'SN',
+            width : '10%'
         },{
             field : 'status',
             title : '状态',
@@ -234,15 +241,18 @@ layui.define([ 'jquery', 'layer', 'table','laydate' ,'element','layout','aform',
         },{
             field:'warrantyType',
             title:"保修类型",
+            width : '8%',
             templet: function(d){
                 return aDevice.getWarrantyText(d.warrantyType);
             }
         },{
             field : 'model',
-            title : '机型'
+            title : '机型',
+            width : '8%'
         }, {
             field : 'manufactureTime',
             title : '出厂日期',
+            width : '8%',
             templet: function(d){
                 var manufactureTime = d.manufactureTime;
                 if (undefined!=manufactureTime && null!=manufactureTime) {
@@ -252,28 +262,39 @@ layui.define([ 'jquery', 'layer', 'table','laydate' ,'element','layout','aform',
             }
         }, {
             field : 'repairTimes',
-            title : '维修次数'
+            title : '维修次数',
+            width : '6%'
         }, {
             field : 'deliveryTime',
-            title : '送修日期'
-        },{
-            fixed: 'right', 
-            width:160, 
+            title : '送修日期',
+            width : '8%'
+        },{ 
+            width:220, 
             align:'center', 
             toolbar: '#repairDeviceTableToolTpl'
         }  ] ],
         url : repairDeviceTableUrl,
         method : "POST",
-        where:{params:JSON.stringify({"lessThanStatus":"backing","repairStationUdid":repairStationUdid,"invoiceSerialNumber":repairInvoiceSerialNumber,"packageSerialNumber":repairPackageSerialNumber})},
+        where:{params:JSON.stringify(getCondition())},
         done: function(res, curr, count){
         }
     });
     
+    function getCondition(){
+        var formData = aform.toObject($("form[name=repairDeviceSearchForm]"));
+        formData.repairStationUdid=repairStationUdid;
+        formData.invoiceSerialNumber=repairInvoiceSerialNumber;
+        formData.packageSerialNumber=repairPackageSerialNumber;
+        alog.d(formData);
+        return formData;
+    }
+    
+//    {"repairStationUdid":repairStationUdid,"invoiceSerialNumber":repairInvoiceSerialNumber,"packageSerialNumber":repairPackageSerialNumber}
     function reloadRepairDeviceListTable(){
         table.reload('repairDeviceTableId', {
             url: repairDeviceTableUrl,
             method : "POST",
-            where:{params:JSON.stringify({"repairStationUdid":repairStationUdid,"invoiceSerialNumber":repairInvoiceSerialNumber,"packageSerialNumber":repairPackageSerialNumber})}
+            where:{params:JSON.stringify(getCondition())}
           });
     }
 
@@ -307,6 +328,8 @@ layui.define([ 'jquery', 'layer', 'table','laydate' ,'element','layout','aform',
         } else if(layEvent === 'edit'){ //编辑
             repairDevicePopupType = 2;
             showRepairDevicePage(id,sn);
+        }else if("editStatus"==layEvent){//修改状态
+            showRepairDeviceStatusPage(id,sn);
         }
         return false;
       });
@@ -491,8 +514,67 @@ layui.define([ 'jquery', 'layer', 'table','laydate' ,'element','layout','aform',
         
         return false;
     });
+    
+    $("form[name=repairDeviceSearchForm]").submit(function(){
+        reloadRepairDeviceListTable();
+        return false;
+    });
+    
+    
+    var repairDeviceStatusPagePopupIdx = null;
+    function showRepairDeviceStatusPage(id,sn){
         
-    alog.d("repairDeviceList start");
+        $("form[name=repairDeviceStatusForm]").find("input[name=id]").val(id);
+        $("form[name=repairDeviceStatusForm]").find("input[name=sn]").val(sn);
+                
+        var areaInfo = apopup.getArea($("#repairDeviceStatusPage"));
+        alog.d(areaInfo);
+        
+        var popupTitle="修改设备状态";
+        
+        repairDeviceStatusPagePopupIdx = layer.open({
+            id:"repairDeviceStatusPagePopupId",
+            type: 1,
+            title:  [popupTitle, 'font-size:18px;'], //不显示标题栏
+            skin: 'layui-layer-rim', //加上边框
+            offset: [areaInfo.top, areaInfo.left],
+            area: [areaInfo.width,areaInfo.height], //宽高
+            shade: true,
+            offset: 'auto',
+            content: $('#repairDeviceStatusPage'),
+            success: function(layero, index){
+            }
+        });
+    }
+    
+    $("form[name=repairDeviceStatusForm]").submit(function(){
+        
+        var fdata = aform.toObject($("form[name=repairDeviceStatusForm]"));
+        var pdata = {"userId":aUser.getId()};
+        pdata.device = fdata;
+        alog.d(pdata);
+        
+        layer.confirm("是否确定修改设备状态？", function(index){
+            layer.close(index);
+            ajx.post({
+                "url" : "api/browser/repair/device/save",
+                "data": JSON.stringify(pdata)
+                },
+                function(rtn) {
+                    if(rtn){
+                        layer.msg("状态修改成功!");
+                        layer.close(repairDeviceStatusPagePopupIdx);
+                        reloadRepairDeviceListTable();
+                    }else{
+                        layer.msg("状态修改失败!");
+                    }
+                }
+            );
+          });
+        
+        return false;
+    });
+    
     exports('repairDeviceList', {}); // 注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
 

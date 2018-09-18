@@ -356,6 +356,8 @@ layui.define([ 'jquery', 'layer', 'table', 'atable' ,'element','layout','aform',
        return false;
     });
     
+    var isDoSaveQuotation = false;
+    
     function doSaveQuotation(isConfirm){
         var quotationInvoices = getQuotationInvoices();
         alog.d("quotationInvoices:");
@@ -365,6 +367,13 @@ layui.define([ 'jquery', 'layer', 'table', 'atable' ,'element','layout','aform',
             layer.msg("请完成报价信息后再保存!");
             return false;
         }
+        
+        if (isDoSaveQuotation) {
+            layer.msg("正在保存报价信息，请稍等!");
+            return false;
+        }
+        
+        isDoSaveQuotation = true;
         
         automaticBilling();
         
@@ -382,6 +391,7 @@ layui.define([ 'jquery', 'layer', 'table', 'atable' ,'element','layout','aform',
                             "url":"api/browser/repair/device/save/quotation/invoice",
                             "data":JSON.stringify(repairDeviceData)
                         },function(data){
+                            isDoSaveQuotation = false;
                             alog.d(data);
                             if(data){
                                 layer.msg("报价保存成功!",function(){
@@ -393,6 +403,7 @@ layui.define([ 'jquery', 'layer', 'table', 'atable' ,'element','layout','aform',
                                 });
                             }
                         },function(code,msg){
+                            isDoSaveQuotation = false;
                             alog.d(code+","+msg);
                             layer.msg("报价保存失败!code:"+code+";msg:"+msg,function(){
                                 reloadPageInfo();
@@ -406,6 +417,7 @@ layui.define([ 'jquery', 'layer', 'table', 'atable' ,'element','layout','aform',
                         "url":"api/browser/repair/device/save/quotation/invoice",
                         "data":JSON.stringify(repairDeviceData)
                     },function(data){
+                        isDoSaveQuotation = false;
                         alog.d(data);
                         if(data){
                             layer.msg("保存成功!",function(){
@@ -417,6 +429,7 @@ layui.define([ 'jquery', 'layer', 'table', 'atable' ,'element','layout','aform',
                             });
                         }
                     },function(code,msg){
+                        isDoSaveQuotation = false;
                         alog.d(code+","+msg);
                         layer.msg("保存失败!code:"+code+";msg:"+msg,function(){
                             reloadPageInfo();

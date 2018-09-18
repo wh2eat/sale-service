@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html layout:decorator="/layout">
+<head>
+</head>
+<body class="layui-layout-body">
+	<div layout:fragment="content">
+		<div class="layui-row" style="">
+			<div class="layui-col-md4" align="left">
+				<span>设备检测报告列表</span>
+			</div>
+			<div class="layui-col-md4 layui-col-md-offset4" align="right">
+			    <button type="button" class="layui-btn layui-btn-sm" name="batch-review-success" title="审核通过">通过</button>
+                <button type="button" class="layui-btn layui-btn-sm layui-btn-danger" name="batch-review-failed" title="审核不通过">不通过</button>
+                <a type="button" class="layui-btn layui-btn-sm" th:href="@{/index(target=repairDeviceManageReviews)}" title="返回上一层">返回</a>
+			</div>
+		</div>
+		<hr/>
+		<form name="repairDeviceHiddenForm" class="layui-form">
+            <input type="hidden" name="id" th:value="${repairDeviceId}"/>
+            <input type="hidden" name="sn" th:value="${sn}"/>
+        </form>
+		<div class="layui-row">
+           <form name="repairDeviceInfoForm" lay-filter="repairDeviceInfoFormFilter" class="layui-form">
+              <table id="repairDeviceSearchTable" class="table-search layui-table" 
+                    lay-filter="repairDeviceSearchTableFilter">
+                <tr>
+                    <td width="20%">终端客户名称</td>
+                    <td>
+                        <input type="text" name="endCustomerName" readonly class="layui-input">
+                    </td>
+                </tr>
+                <tr>
+                    <td>设备SN</td>
+                    <td>
+                        <input type="text" name="sn" class="layui-input" readonly>
+                    </td>
+                </tr>
+              </table>
+           </form>
+        </div>
+		<script type="text/html" id="repairDeviceDetectInvoiceListTableToolTpl">
+            {{# if(d.quotedPrice==1){ }}
+                <a class="layui-btn layui-btn-xs" lay-event="cancel-quotation" title="编辑">
+                                                取消报价
+                </a>
+            {{# }else{ }}
+                <a class="layui-btn layui-btn-xs" lay-event="quotation" title="编辑">
+                                                报价
+                </a>
+            {{# } }}
+            <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete" title="">
+                <i class="layui-icon layui-icon-delete" style="font-size: 30px; color: #fff;font-weight:bold;"></i>
+            </a>
+        </script>
+		<table id="repairDeviceDetectInvoiceListTable" class="layui-table layui-hide"
+			lay-filter="repairDeviceDetectInvoiceListTableFilter">
+		</table>
+	</div>
+	<th:block layout:fragment="script">
+		<script th:inline="javascript">
+            var modulesPath = /*[[@{/static/js/modules/}]]*/'/static/js/modules/';
+            var jsVersion=[[${jsVersion}]];
+            layui.config({
+                base : modulesPath
+                ,version : jsVersion
+            //你存放新模块的目录，注意，不是layui的模块目录
+            }).use('repairDeviceManageReviewDetectInvoiceList'); //加载入口
+        </script>
+	</th:block>
+</body>
+</html>

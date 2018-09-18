@@ -107,6 +107,8 @@ public class RepairDeviceListService {
             throw new RestException(RestCode.FieldIsEmpty, "sn");
         }
 
+        deviceDbo.setSn(deviceDbo.getSn().trim());
+
         Integer id = deviceDbo.getId();
 
         if (null == id) {
@@ -213,12 +215,23 @@ public class RepairDeviceListService {
                 repairDeviceDbo.setSn(sns);
             }
 
+            String expressNumber = paramsJson.getString("expressNumber");
+            if (StringUtils.isNotBlank(expressNumber)) {
+                repairDeviceDbo.setExpressNumber(expressNumber);
+            }
+
+            String endCustomerName = paramsJson.getString("endCustomerName");
+            if (StringUtils.isNotBlank(endCustomerName)) {
+                repairDeviceDbo.setEndCustomerName(endCustomerName);
+            }
+
             String repairStationUdid = paramsJson.getString("repairStationUdid");
             repairDeviceDbo.setRepairStationId(repairStationService.getIdNotNull(repairStationUdid));
 
             String allWaitBack = paramsJson.getString("allWaitBack");
             if ("1".equals(allWaitBack)) {
-                repairDeviceDbo.setNotStatus(RepairStatus.Backing.getCode());
+                // repairDeviceDbo.setNotStatus(RepairStatus.Backing.getCode());
+                repairDeviceDbo.setStatus(RepairStatus.BackWait.getCode());
             }
 
             String bpSerialNumber = paramsJson.getString("repairBackPackageSerialNumber");
@@ -240,6 +253,7 @@ public class RepairDeviceListService {
                 int ltStatus = RepairStatus.getCode(lessThanStatus);
                 repairDeviceDbo.setLessThanStatus(ltStatus);
             }
+
         }
 
         List<RepairDeviceDbo> list = repairDeviceService.list(pageInfo, repairDeviceDbo);
@@ -249,6 +263,47 @@ public class RepairDeviceListService {
             repairDeviceDetectInvoiceService.setRepairDetectInvoices(list);
 
             repairPackageService.setRepairPackageDbo(list);
+        }
+
+        try {
+            return RestResultFactory.getPageResult(list, pageInfo.getTotal());
+        }
+        finally {
+            pageInfo = null;
+        }
+
+    }
+
+    @RequestMapping(path = "find/detect/invoice/list", method = RequestMethod.POST, consumes = {
+            MediaType.APPLICATION_FORM_URLENCODED_VALUE })
+    public Object findDetectInvoiceList(@RequestParam("page") int pageNum, @RequestParam("limit") int limit,
+            @RequestParam("params") String params) throws ServiceException, RestException {
+
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("[][getList][pageDto:" + pageNum + "," + limit + "," + params + "]");
+        }
+
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setPageNum(pageNum);
+        pageInfo.setPageSize(limit);
+        pageInfo.setTotal(0);
+
+        Integer repairDeviceId = null;
+        if (StringUtils.isNotEmpty(params)) {
+            JSONObject paramJson = JSONObject.parseObject(params);
+            String repairDeviceIdStr = paramJson.getString("repairDeviceId");
+            if (StringUtils.isNotBlank(repairDeviceIdStr)) {
+                repairDeviceId = Integer.parseInt(repairDeviceIdStr);
+            }
+        }
+
+        List<RepairDeviceDetectInvoiceDbo> list = null;
+
+        if (null != repairDeviceId) {
+            list = repairDeviceDetectInvoiceService.getListByRepairDevice(repairDeviceId);
+            if (CollectionUtils.isNotEmpty(list)) {
+                pageInfo.setTotal(list.size());
+            }
         }
 
         try {

@@ -17,4 +17,6 @@ public interface IRepairDeviceQuotationInvoiceService {
     public void saveQuotationInvoice(Integer createUserId, List<RepairDeviceQuotationInvoiceDbo> quotationInvoiceDbos)
             throws ServiceException;
 
+    public void delete(List<Integer> repairDeviceDetectInvoiceIds) throws ServiceException;
+
 }

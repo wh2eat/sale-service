@@ -1,7 +1,10 @@
 package com.idata.sale.service.web.base.dao.impl;
 
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
@@ -97,6 +100,30 @@ public class SystemRepairStationDao extends BaseDao<SystemRepairStationDbo> {
             sql = null;
             values = null;
         }
+    }
+
+    public Map<String, Map<String, Object>> getRepairStationMap(Set<String> repairStationIds) throws SQLException {
+
+        StringBuilder sql = new StringBuilder("select ").append(getAllCloumnStrWithComma()).append(" from ")
+                .append(getTableName()).append(" where id in(");
+        for (String rsid : repairStationIds) {
+            sql.append(rsid).append(",");
+        }
+        sql.append(0).append(")");
+
+        List<Map<String, Object>> maps = find(sql.toString(), null);
+
+        if (CollectionUtils.isNotEmpty(maps)) {
+            Map<String, Map<String, Object>> map = new HashMap<>();
+            for (Map<String, Object> rsmap : maps) {
+                map.put(String.valueOf(rsmap.get("id")), rsmap);
+            }
+            maps.clear();
+            maps = null;
+            return map;
+        }
+
+        return null;
     }
 
 }

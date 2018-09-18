@@ -47,27 +47,18 @@ layui.define([ 'jquery', 'layer', 'table' ,'laydate','element','layout','aform',
             limits:[10,20,50,100],
             cols : [ [
                 {checkbox:true},{
-                    field : 'repairInvoice',
-                    title : '维修单号',
-                    templet: function(d){
-                        return d.repairInvoice.serialNumber;
-                    }
-                },{
-                    field : 'repairPacakge',
-                    title : '维修包编号',
-                    templet: function(d){
-                        var repairPackage = d.repairPackage;
-                        return repairPackage.serialNumber;
-                    }
+                    field : 'endCustomerName',
+                    title : '终端客户名称',
+                    width : '15%'
                 },{
                     field : 'sn',
                     title : 'SN',
-                    width : 150
+                    width : '15%'
                         
                 },{
                     field : 'model',
                     title : '机型',
-                    width : 150
+                    width : '15%'
                         
                 },{
                     field : 'repairBackPacakge',
@@ -86,6 +77,9 @@ layui.define([ 'jquery', 'layer', 'table' ,'laydate','element','layout','aform',
                 },{
                     field : 'createTime',
                     title : '送修时间'
+                },{
+                    field : 'remark',
+                    title : '备注'
                 }  ] ],
                 url : repairDeviceTableUrl,
                 method : "POST",

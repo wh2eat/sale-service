@@ -3,7 +3,10 @@ package com.idata.sale.service.web.base.dao.impl;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -216,6 +219,29 @@ public class SystemUserDao extends BaseDao<SystemUserDbo> {
         }
 
         return false;
+    }
+
+    public Map<String, Map<String, Object>> getStringIdMaps(Set<String> userIds) throws SQLException {
+
+        StringBuilder sql = new StringBuilder("select ").append(getAllCloumnStrWithComma()).append(" from ")
+                .append(getTableName()).append(" where id in(");
+        for (String userId : userIds) {
+            sql.append(userId).append(",");
+        }
+        sql.append(0).append(")");
+
+        List<Map<String, Object>> maps = find(sql.toString(), null);
+        if (CollectionUtils.isNotEmpty(maps)) {
+            Map<String, Map<String, Object>> map = new HashMap<>();
+            for (Map<String, Object> sumap : maps) {
+                map.put(String.valueOf(sumap.get("id")), sumap);
+            }
+            maps.clear();
+            maps = null;
+            return map;
+        }
+
+        return null;
     }
 
 }

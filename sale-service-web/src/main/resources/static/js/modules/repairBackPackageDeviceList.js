@@ -245,6 +245,9 @@ layui.define([ 'jquery', 'layer', 'table' ,'element','layout','aform','apopup','
                 field : 'deliveryTime',
                 title : '送修日期'
             },{
+                field : 'remark',
+                title : '备注'
+            },{
                 fixed: 'right', 
                 width : 80, 
                 align:'center', 

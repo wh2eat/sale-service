@@ -10,9 +10,6 @@ layui.define([ 'jquery', 'layer', 'table','laydate' ,'element','layout','aform',
     var aform = layui.aform;
     
     var laydate = layui.laydate;
-    laydate.render({ 
-        elem: '#deviceSearch4DeliveryTime' //或 elem: document.getElementById('test')、elem: lay('#test') 等
-    });
 
     var table = layui.table;
     
@@ -49,54 +46,60 @@ layui.define([ 'jquery', 'layer', 'table','laydate' ,'element','layout','aform',
                 {checkbox:true},{
                     field : 'repairInvoice',
                     title : '维修单号',
+                    width : '10%',
                     templet: function(d){
                         return d.repairInvoice.serialNumber;
                     }
                 },{
                     field : 'repairPacakge',
                     title : '快递信息',
+                    width : '10%',
                     templet: function(d){
                         var repairPackage = d.repairPackage;
                         return repairPackage.expressName+":"+repairPackage.expressNumber;
                     }
                 },{
+                    field : 'endCustomerName',
+                    title : '终端客户名称'
+                },{
                     field : 'sn',
                     title : 'SN',
-                    width : 85
+                    width : '10%'
                         
                 },{
                     field : 'status',
                     title : '状态',
-                    width : 75,
+                    width : '8%',
                     templet: function(d){
                         return aRepairStatus.getDisplayText(d.status);
                     }
                 },{
                     field:'warrantyType',
                     title:"保修类型",
-                    width : 90,
+                    width : '8%',
                     templet: function(d){
                         return aDevice.getWarrantyText(d.warrantyType);
                     }
                 },{
                     field : 'model',
                     title : '机型',
-                    width : 60
+                    width : '5%',
+                }, {
+                    field : 'repairTimes',
+                    title : '维修次数',
+                    width : '8%'
                 }, {
                     field : 'manufactureTime',
                     title : '出厂日期',
-                    width : 105,
+                    width : '10%',
                     templet: function(d){
                         var manufactureTime = d.manufactureTime;
                         return manufactureTime.substring(0,10);
                     }
                 }, {
-                    field : 'repairTimes',
-                    title : '维修次数',
-                    width : 90
-                }, {
                     field : 'createTime',
-                    title : '送修日期'
+                    title : '送修日期',
+                    width : '10%'
                 }  ] ],
                 url : repairDeviceTableUrl,
                 method : "POST",

@@ -65,6 +65,10 @@ public class DeviceRepairDetectInvoiceRestService {
             throw new RestException(RestCode.FieldIsEmpty, "Invoices is empty");
         }
 
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("[][][" + detectInvoiceDbos + "]");
+        }
+
         Integer repairDeviceId = null;
 
         for (RepairDeviceDetectInvoiceDbo repairDeviceDetectInvoiceDbo : detectInvoiceDbos) {
@@ -131,6 +135,9 @@ public class DeviceRepairDetectInvoiceRestService {
 
     @Autowired
     private IRepairDeviceService repairDeviceService;
+
+    @Autowired
+    private IRepairDeviceDetectInvoiceService detectInvoiceService;
 
     @DeviceTokenCheck
     @RequestMapping(path = "delete/list", method = RequestMethod.POST, consumes = "application/json;charset=UTF-8")
@@ -212,6 +219,8 @@ public class DeviceRepairDetectInvoiceRestService {
                 invoiceIds.add(Integer.parseInt(idStr.trim()));
             }
         }
+
+        detectInvoiceService.delete(invoiceIds);
 
         repairDeviceDetectInvoiceService.delete(invoiceIds);
 
