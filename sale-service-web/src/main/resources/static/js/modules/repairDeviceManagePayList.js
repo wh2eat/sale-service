@@ -68,7 +68,7 @@ layui.define([ 'jquery', 'layer','laydate', 'table', 'aUser' ,'element','layout'
                 },{
                     field : 'sn',
                     title : 'SN',
-                    width : '10%'
+                    width : '8%'
                         
                 },{
                     field : 'model',
@@ -91,7 +91,7 @@ layui.define([ 'jquery', 'layer','laydate', 'table', 'aUser' ,'element','layout'
                 },{
                     field : 'detectUser',
                     title : '维修人',
-                    width : '10%',
+                    width : '8%',
                     templet: function(d){
                         var detectUser = d.detectUser;
                         if(undefined!==detectUser&&null!==detectUser){
@@ -102,7 +102,7 @@ layui.define([ 'jquery', 'layer','laydate', 'table', 'aUser' ,'element','layout'
                 },{
                     field : 'quotationUser',
                     title : '报价人',
-                    width : '10%',
+                    width : '8%',
                     templet: function(d){
                         var quotationUser = d.quotationUser;
                         if(undefined!==quotationUser&&null!==quotationUser){

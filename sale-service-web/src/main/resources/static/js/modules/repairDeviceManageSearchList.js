@@ -101,6 +101,24 @@ layui.define([ 'jquery', 'layer', 'laytpl','table','laydate' ,'element','layout'
                         return "";
                     }                    
                 },{
+                    field : 'payStatus',
+                    title : '支付状态',
+                    templet:function(d){
+                          if(rd.charge==0){
+                              return "免费维修";
+                          }else{ 
+                              if(0==rd.payStatus){ 
+                                  return "收费维修(未支付)";
+                              }else if(1==rd.payStatus){ 
+                                  return "收费维修(用户拒绝)";
+                              }else if(9==rd.payStatus){ 
+                                  return "收费维修(已支付)";
+                              }else{
+                                return "处理中";
+                              } 
+                         }
+                    }
+                },{
                     field : 'repairBackPackage',
                     title : '返客快递单号',
                     width : '12%',
@@ -111,9 +129,6 @@ layui.define([ 'jquery', 'layer', 'laytpl','table','laydate' ,'element','layout'
                         }
                         return '';
                     }
-                }, {
-                    field : 'createTime',
-                    title : '送修日期'
                 }  ] ],
                 url : repairDeviceTableUrl,
                 method : "POST",

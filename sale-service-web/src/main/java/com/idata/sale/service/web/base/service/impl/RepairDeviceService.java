@@ -1,6 +1,7 @@
 package com.idata.sale.service.web.base.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -33,6 +34,8 @@ import com.idata.sale.service.web.base.dao.impl.RepairDeviceDao;
 import com.idata.sale.service.web.base.dao.impl.RepairDeviceDetectInvoiceDao;
 import com.idata.sale.service.web.base.dao.impl.RepairDeviceQuotationInvoiceDao;
 import com.idata.sale.service.web.base.service.IDeviceService;
+import com.idata.sale.service.web.base.service.IRepairDeviceDetectInvoiceService;
+import com.idata.sale.service.web.base.service.IRepairDeviceQuotationInvoiceService;
 import com.idata.sale.service.web.base.service.IRepairDeviceService;
 import com.idata.sale.service.web.base.service.IRepairInvoiceService;
 import com.idata.sale.service.web.base.service.IRepairPackageService;
@@ -40,6 +43,7 @@ import com.idata.sale.service.web.base.service.ServiceException;
 import com.idata.sale.service.web.base.service.constant.ServiceCode;
 import com.idata.sale.service.web.base.service.dto.RepairDeviceBaseDto;
 import com.idata.sale.service.web.base.service.event.RepairDeviceStatusEvent;
+import com.idata.sale.service.web.util.TimeUtil;
 
 @Service
 public class RepairDeviceService implements IRepairDeviceService {
@@ -677,6 +681,69 @@ public class RepairDeviceService implements IRepairDeviceService {
         repairDeviceDbo.setResult(RepairResult.Success.code);
 
         repairDeviceDao.updateRepairDeviceStatus(ids, repairDeviceDbo);
+
+    }
+
+    @Autowired
+    private IRepairDeviceQuotationInvoiceService quotationInvoiceService;
+
+    @Autowired
+    private IRepairDeviceDetectInvoiceService detectInvoiceService;
+
+    @Override
+    public void modifyStatus(Integer repairDeviceId, String sn, int status) throws ServiceException {
+
+        RepairDeviceDbo deviceDbo = repairDeviceDao.findById(repairDeviceId);
+        if (null == deviceDbo || !deviceDbo.getSn().equals(sn)) {
+            throw new ServiceException(ServiceCode.system_object_not_exist_error, "sn:" + sn);
+        }
+
+        if (status == RepairStatus.CheckWait.getCode()) {
+            LOGGER.info("[][modifyStatus][recheck,repairDeviceId:" + repairDeviceId + "]");
+            recheck(repairDeviceId, sn);
+        }
+        else {
+            LOGGER.error("[][modifyStatus][status error,repairDeviceId:" + repairDeviceId + ";status:" + status + "]");
+        }
+
+    }
+
+    private void recheck(Integer repairDeviceId, String sn) throws ServiceException {
+
+        RepairDeviceDbo updateDbo = new RepairDeviceDbo();
+        updateDbo.setId(repairDeviceId);
+        updateDbo.setStatus(RepairStatus.CheckWait.getCode());
+        updateDbo.setLaborCosts("0");
+        updateDbo.setCostTotal("0");
+        updateDbo.setCharge(Device.ChargeNot.getCode());
+        updateDbo.setPayType(Device.PayTypeCash.getCode());
+        updateDbo.setPayStatus(Device.PayNot.getCode());
+        updateDbo.setUpdateTime(TimeUtil.getNowDate());
+
+        try {
+            repairDeviceDao.update(updateDbo);
+            LOGGER.info("[][recheck][update repairDevice success," + updateDbo + "]");
+        }
+        catch (BaseDaoException e) {
+            throw new ServiceException(ServiceCode.system_db_exception, e.getMessage());
+        }
+
+        List<RepairDeviceDetectInvoiceDbo> detectInvoiceDbos = detectInvoiceService
+                .getListByRepairDevice(repairDeviceId);
+        if (CollectionUtils.isNotEmpty(detectInvoiceDbos)) {
+            List<Integer> repairDeviceDetectInvoiceIds = new ArrayList<>(detectInvoiceDbos.size());
+            for (RepairDeviceDetectInvoiceDbo repairDeviceDetectInvoiceDbo : detectInvoiceDbos) {
+                repairDeviceDetectInvoiceIds.add(repairDeviceDetectInvoiceDbo.getId());
+            }
+
+            quotationInvoiceService.delete(repairDeviceDetectInvoiceIds);
+            repairDeviceDetectInvoiceIds.clear();
+            repairDeviceDetectInvoiceIds = null;
+
+            LOGGER.info("[][recheck][delete detectInvoiceDbos," + Arrays.toString(detectInvoiceDbos.toArray()) + "]");
+            detectInvoiceDbos.clear();
+            detectInvoiceDbos = null;
+        }
 
     }
 

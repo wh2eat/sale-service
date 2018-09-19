@@ -557,7 +557,7 @@ layui.define([ 'jquery', 'layer', 'table','laydate' ,'element','layout','aform',
         layer.confirm("是否确定修改设备状态？", function(index){
             layer.close(index);
             ajx.post({
-                "url" : "api/browser/repair/device/save",
+                "url" : "api/browser/repair/device/modify/status",
                 "data": JSON.stringify(pdata)
                 },
                 function(rtn) {

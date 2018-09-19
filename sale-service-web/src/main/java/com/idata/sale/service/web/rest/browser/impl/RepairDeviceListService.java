@@ -149,6 +149,29 @@ public class RepairDeviceListService {
         return true;
     }
 
+    @RequestMapping(path = "modify/status", method = RequestMethod.POST, consumes = {
+            MediaType.APPLICATION_JSON_VALUE })
+    public Object modifyStatus(@RequestBody RepairDeviceListDto deviceListDto) throws RestException, ServiceException {
+
+        RepairDeviceDbo deviceDbo = deviceListDto.getDevice();
+
+        if (null == deviceDbo) {
+            throw new RestException(RestCode.FieldIsEmpty);
+        }
+
+        if (StringUtils.isEmpty(deviceListDto.getUserId())) {
+            throw new RestException(RestCode.FieldIsEmpty, "userId");
+        }
+
+        if (StringUtils.isEmpty(deviceDbo.getSn())) {
+            throw new RestException(RestCode.FieldIsEmpty, "sn");
+        }
+
+        repairDeviceService.modifyStatus(deviceDbo.getId(), deviceDbo.getSn(), deviceDbo.getStatus());
+
+        return true;
+    }
+
     @Autowired
     private IRepairDeviceDetectInvoiceService repairDeviceDetectInvoiceService;
 

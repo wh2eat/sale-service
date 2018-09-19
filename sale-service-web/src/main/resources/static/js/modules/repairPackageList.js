@@ -139,11 +139,11 @@ layui.define([ 'jquery', 'layer', 'table' ,'element','layout','aform','aRepairIn
         var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         
-        var status = data.status;
-        if(status>=20&&layEvent !== 'detail'){
-            layer.msg("维修包已经开始处理，不能进行操作!");
-            return false;
-        }
+//        var status = data.status;
+//        if(status>=20&&layEvent !== 'detail'){
+//            layer.msg("维修包已经开始处理，不能进行操作!");
+//            return false;
+//        }
         
         var serialNumber = data.serialNumber;
         if(layEvent === 'detail'){ //查看

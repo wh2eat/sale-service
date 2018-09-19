@@ -30,10 +30,10 @@ layui.define([ 'jquery', 'layer', 'table' ,'element','layout','aform','aRepairIn
         var tr = obj.tr; //获得当前行 tr 的DOM对象
         
         var status = data.status;
-        if(status>=20&&layEvent !== 'detail'){
-            layer.msg("维修单已经开始处理，不能进行操作!");
-            return false;
-        }
+//        if(status>=20&&layEvent !== 'detail'){
+//            layer.msg("维修单已经开始处理，不能进行操作!");
+//            return false;
+//        }
         
         var serialNumber = data.serialNumber;
         if(layEvent === 'detail'){ //查看

@@ -67,4 +67,6 @@ public interface IRepairDeviceService {
 
     public void finishConfim(List<Integer> ids) throws ServiceException;
 
+    public void modifyStatus(Integer repairDeviceId, String sn, int status) throws ServiceException;
+
 }
