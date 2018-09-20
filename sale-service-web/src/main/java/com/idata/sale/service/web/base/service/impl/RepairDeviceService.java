@@ -548,9 +548,11 @@ public class RepairDeviceService implements IRepairDeviceService {
 
     @Override
     public void confirmQutation(Integer userId, Integer repairDeviceId, String repaiDeviceSn) throws ServiceException {
-
         validateDeviceSn(repairDeviceId, repaiDeviceSn);
+        confirmQutation(repairDeviceId);
+    }
 
+    private void confirmQutation(Integer repairDeviceId) {
         int nextStatus = RepairStatus.PayWait.getCode();
         Integer payStatus = null;
         Date payFinishDate = null;
@@ -573,13 +575,25 @@ public class RepairDeviceService implements IRepairDeviceService {
 
         repairDeviceDao.updateRepairDeviceStatus(repairDeviceId, rdo);
 
+        LOGGER.info("[][confirmQutation][repairDeviceId:" + repairDeviceId + ";" + rdo + "]");
+
+    }
+
+    @Override
+    public void confirmQutation(List<Integer> repairDeviceIds) throws ServiceException {
+        for (Integer rdid : repairDeviceIds) {
+            confirmQutation(rdid);
+        }
     }
 
     @Override
     public void refuseQutation(Integer userId, Integer repairDeviceId, String repaiDeviceSn) throws ServiceException {
 
         validateDeviceSn(repairDeviceId, repaiDeviceSn);
+        refuseQutation(repairDeviceId);
+    }
 
+    private void refuseQutation(Integer repairDeviceId) {
         int nextStatus = RepairStatus.BackWait.getCode();
 
         RepairDeviceDbo rdo = new RepairDeviceDbo();
@@ -589,6 +603,16 @@ public class RepairDeviceService implements IRepairDeviceService {
         rdo.setResult(RepairResult.FailUserRefusePay.code);
 
         repairDeviceDao.updateRepairDeviceStatus(repairDeviceId, rdo);
+
+        LOGGER.info("[][refuseQutation][repairDeviceId:" + repairDeviceId + ";" + rdo + "]");
+
+    }
+
+    @Override
+    public void refuseQutation(List<Integer> repairDeviceIds) throws ServiceException {
+        for (Integer repairDeviceId : repairDeviceIds) {
+            refuseQutation(repairDeviceId);
+        }
     }
 
     @Override
@@ -617,7 +641,8 @@ public class RepairDeviceService implements IRepairDeviceService {
 
         repairDeviceDao.updateRepairDeviceStatus(repairDeviceId, rdo);
         rdo = null;
-        LOGGER.info("[][finishPay][repairDeviceId:" + repairDeviceId + ";payType:" + payType + "]");
+        LOGGER.info("[][finishPay][repairDeviceId:" + repairDeviceId + ";sn:" + repaiDeviceSn + ";payType:" + payType
+                + ";total:" + repairDeviceDbo.getCostTotal() + "]");
     }
 
     @Override
@@ -698,7 +723,7 @@ public class RepairDeviceService implements IRepairDeviceService {
             throw new ServiceException(ServiceCode.system_object_not_exist_error, "sn:" + sn);
         }
 
-        if (status == RepairStatus.CheckWait.getCode()) {
+        if (status == RepairStatus.Checked.getCode()) {
             LOGGER.info("[][modifyStatus][recheck,repairDeviceId:" + repairDeviceId + "]");
             recheck(repairDeviceId, sn);
         }
@@ -712,7 +737,7 @@ public class RepairDeviceService implements IRepairDeviceService {
 
         RepairDeviceDbo updateDbo = new RepairDeviceDbo();
         updateDbo.setId(repairDeviceId);
-        updateDbo.setStatus(RepairStatus.CheckWait.getCode());
+        updateDbo.setStatus(RepairStatus.Checked.getCode());
         updateDbo.setLaborCosts("0");
         updateDbo.setCostTotal("0");
         updateDbo.setCharge(Device.ChargeNot.getCode());

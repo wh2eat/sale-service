@@ -56,7 +56,11 @@ public interface IRepairDeviceService {
 
     public void confirmQutation(Integer userId, Integer repairDeviceId, String repaiDeviceSn) throws ServiceException;
 
+    public void confirmQutation(List<Integer> repairDeviceIds) throws ServiceException;
+
     public void refuseQutation(Integer userId, Integer repairDeviceId, String repaiDeviceSn) throws ServiceException;
+
+    public void refuseQutation(List<Integer> repairDeviceId) throws ServiceException;
 
     public void finishPay(Integer userId, Integer repairDeviceId, String repaiDeviceSn, String payDesc)
             throws ServiceException;

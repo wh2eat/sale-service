@@ -1,7 +1,9 @@
 package com.idata.sale.service.web.rest.browser.dto;
 
 import java.util.List;
+import java.util.Map;
 
+import com.idata.sale.service.web.base.dao.dbo.RepairDeviceDbo;
 import com.idata.sale.service.web.base.dao.dbo.RepairDeviceQuotationInvoiceDbo;
 
 public class RepairDeviceQuotationInvoiceDto {
@@ -17,6 +19,10 @@ public class RepairDeviceQuotationInvoiceDto {
     private Integer confirmStatus;
 
     private String confirmRemark;
+
+    private List<RepairDeviceDbo> devices;
+
+    private Map<String, String[]> batchDevices;
 
     public Integer getConfirmStatus() {
         return confirmStatus;
@@ -93,9 +99,9 @@ public class RepairDeviceQuotationInvoiceDto {
     public String toString() {
         return "RepairDeviceQuotationInvoiceDto [userId=" + userId + ", sn=" + sn + ", id=" + id + ", detectInvoiceId="
                 + detectInvoiceId + ", confirmStatus=" + confirmStatus + ", confirmRemark=" + confirmRemark
-                + ", payType=" + payType + ", payDescription=" + payDescription + ", costTotal=" + costTotal
-                + ", laborCosts=" + laborCosts + ", currency=" + currency + ", quotationInvoices=" + quotationInvoices
-                + "]";
+                + ", devices=" + devices + ", batchDevices=" + batchDevices + ", payType=" + payType
+                + ", payDescription=" + payDescription + ", costTotal=" + costTotal + ", laborCosts=" + laborCosts
+                + ", currency=" + currency + ", quotationInvoices=" + quotationInvoices + "]";
     }
 
     public String getCostTotal() {
@@ -136,5 +142,21 @@ public class RepairDeviceQuotationInvoiceDto {
 
     public void setCurrency(Integer currency) {
         this.currency = currency;
+    }
+
+    public List<RepairDeviceDbo> getDevices() {
+        return devices;
+    }
+
+    public void setDevices(List<RepairDeviceDbo> devices) {
+        this.devices = devices;
+    }
+
+    public Map<String, String[]> getBatchDevices() {
+        return batchDevices;
+    }
+
+    public void setBatchDevices(Map<String, String[]> batchDevices) {
+        this.batchDevices = batchDevices;
     }
 }

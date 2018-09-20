@@ -1,7 +1,7 @@
 /**
  * 项目JS主入口 以依赖layui的layer和form模块为例
  */
-layui.define([ 'jquery', 'layer','laydate', 'table' ,'element','layout','aform','aRepairInvoice','aRepairPackage','aDevice','apopup','aRepairStatus','alog','ajx'], function(exports) {
+layui.define([ 'jquery', 'layer','laydate', 'table', 'aUser' ,'element','layout','aform','aRepairInvoice','aRepairPackage','aDevice','apopup','aRepairStatus','alog','ajx'], function(exports) {
     
     var $ = layui.$;
     
@@ -15,6 +15,8 @@ layui.define([ 'jquery', 'layer','laydate', 'table' ,'element','layout','aform',
     });
 
     var table = layui.table;
+    
+    var aUser= layui.aUser;
     
     var aRepairInvoice = layui.aRepairInvoice;
     
@@ -45,14 +47,7 @@ layui.define([ 'jquery', 'layer','laydate', 'table' ,'element','layout','aform',
             skin:'row',
             even: false,
             limits:[10,20,50,100],
-            cols : [ [{
-                title : 'ID',
-                fixed : 'left',
-                width : 60,
-                templet: function(row){
-                    return row.LAY_INDEX;
-                  }
-            },{
+            cols : [ [{checkbox:true},{
                     field : 'repairInvoice',
                     title : '维修单号',
                     width : '12%',
@@ -150,6 +145,83 @@ layui.define([ 'jquery', 'layer','laydate', 'table' ,'element','layout','aform',
         
         var id = data.id;
         var sn = data.sn;
+    });
+    
+    $("button[name=refuse-quotation]").click(function(){
+        var checkStatus = table.checkStatus('repairDeviceManageListTableId');
+        var datas = checkStatus.data;
+        var ls = datas.length;
+        if(ls==0){
+            layer.alert("请选择设备！");
+            return false;
+        }
+        var ds = [];
+        for(var i=0;i<ls;i++){
+            var data = datas[i];
+            alog.d(data);
+            var device={"id":data.id,"sn":data.sn};
+            ds[i]=device;
+        }
+        
+        var pd={};
+        pd.userId = aUser.getId();
+        pd.devices=ds;
+        
+        layer.confirm('是否确定，用户已拒绝选中设备的报价信息？', {icon: 3, title:'提示'}, function(index){
+            layer.close(index);
+            ajx.post({
+                "url" : "api/browser/repair/device/batch/refuse/quotation",
+                "data" :  JSON.stringify(pd)
+            },
+            function(rtn) {
+                if(rtn){
+                    layer.msg("操作成功!");
+                    reloadRepairDeviceListTable();
+                }else{
+                    layer.msg("操作失败，请确定报价信息已保存!");
+                }
+            });
+        });
+        return false;
+    });
+    
+    $("button[name=confirm-quotation]").click(function(){
+        var checkStatus = table.checkStatus('repairDeviceManageListTableId');
+        var datas = checkStatus.data;
+        var ls = datas.length;
+        if(ls==0){
+            layer.alert("请选择设备！");
+            return false;
+        }
+        var ds = [];
+        for(var i=0;i<ls;i++){
+            var data = datas[i];
+            alog.d(data);
+            var device={"id":data.id,"sn":data.sn};
+            ds[i]=device;
+        }
+        
+        var pd={};
+        pd.userId = aUser.getId();
+        pd.devices=ds;
+        
+        layer.confirm('是否确定，用户已同意选中设备的报价信息？', {icon: 3, title:'提示'}, function(index){
+            layer.close(index);
+            ajx.post({
+                "url" : "api/browser/repair/device/batch/confirm/quotation",
+                "data" :  JSON.stringify(pd)
+            },
+            function(rtn) {
+                if(rtn){
+                    layer.msg("操作成功!");
+                    reloadRepairDeviceListTable();
+                }else{
+                    layer.msg("操作失败，请确定报价信息已保存!");
+                }
+            });
+        });
+        
+        return false;
     });
     
     exports('repairDeviceManageQuotationList', {}); // 注意，这里是模块输出的核心，模块名必须和use时的模块名一致

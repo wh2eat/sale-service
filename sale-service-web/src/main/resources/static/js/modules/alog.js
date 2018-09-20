@@ -6,7 +6,7 @@ layui.define([ 'jquery', 'layer' ],function(exports){
     
     var $ = layui.$;
     
-    var isDebug = true;
+    var isDebug = false;
     
     var obj = {
       d:function(obj){

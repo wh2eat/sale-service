@@ -1,9 +1,14 @@
 package com.idata.sale.service.web.rest.browser.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -740,6 +745,38 @@ public class RepairDeviceListService {
         return true;
     }
 
+    @RequestMapping(path = "bacth/confirm/quotation", method = RequestMethod.POST)
+    public Object batchConfirmQuotationInvoice(@RequestBody RepairDeviceQuotationInvoiceDto quotationInvoiceDto)
+            throws ServiceException, RestException {
+
+        String uuid = quotationInvoiceDto.getUserId();
+        if (StringUtils.isEmpty(uuid)) {
+            throw new RestException(RestCode.FieldIsEmpty);
+        }
+
+        Integer userId = systemUserService.getId(uuid);
+        if (null == userId) {
+            throw new RestException(RestCode.FieldValueNotSupport);
+        }
+
+        List<RepairDeviceDbo> deviceDbos = quotationInvoiceDto.getDevices();
+        if (CollectionUtils.isEmpty(deviceDbos)) {
+            throw new RestException(RestCode.FieldIsEmpty);
+        }
+
+        List<Integer> deviceIds = new ArrayList<>(deviceDbos.size());
+        for (RepairDeviceDbo repairDeviceDbo : deviceDbos) {
+            Integer repairDeviceId = repairDeviceDbo.getId();
+            String sn = repairDeviceDbo.getSn();
+            repairDeviceService.finishQutation(userId, repairDeviceId, sn);
+            deviceIds.add(repairDeviceId);
+        }
+
+        repairDeviceService.confirmQutation(deviceIds);
+
+        return true;
+    }
+
     @RequestMapping(path = "refuse/quotation", method = RequestMethod.POST)
     public Object refuseQuotationInvoice(@RequestBody RepairDeviceQuotationInvoiceDto quotationInvoiceDto)
             throws ServiceException, RestException {
@@ -765,6 +802,38 @@ public class RepairDeviceListService {
         }
 
         repairDeviceService.refuseQutation(userId, repairDeviceId, sn);
+
+        return true;
+    }
+
+    @RequestMapping(path = "batch/refuse/quotation", method = RequestMethod.POST)
+    public Object batchRefuseQuotationInvoice(@RequestBody RepairDeviceQuotationInvoiceDto quotationInvoiceDto)
+            throws ServiceException, RestException {
+
+        String uuid = quotationInvoiceDto.getUserId();
+        if (StringUtils.isEmpty(uuid)) {
+            throw new RestException(RestCode.FieldIsEmpty);
+        }
+
+        Integer userId = systemUserService.getId(uuid);
+        if (null == userId) {
+            throw new RestException(RestCode.FieldValueNotSupport);
+        }
+
+        List<RepairDeviceDbo> repairDeviceDbos = quotationInvoiceDto.getDevices();
+        if (CollectionUtils.isEmpty(repairDeviceDbos)) {
+            throw new RestException(RestCode.FieldIsEmpty);
+        }
+
+        List<Integer> deviceIds = new ArrayList<>(repairDeviceDbos.size());
+        for (RepairDeviceDbo repairDeviceDbo : repairDeviceDbos) {
+            Integer repairDeviceId = repairDeviceDbo.getId();
+            String sn = repairDeviceDbo.getSn();
+            repairDeviceService.finishQutation(userId, repairDeviceId, sn);
+            deviceIds.add(repairDeviceId);
+        }
+
+        repairDeviceService.refuseQutation(deviceIds);
 
         return true;
     }
@@ -796,6 +865,37 @@ public class RepairDeviceListService {
         String payDescription = quotationInvoiceDto.getPayDescription();
 
         repairDeviceService.finishPay(userId, repairDeviceId, sn, payDescription);
+
+        return true;
+    }
+
+    @RequestMapping(path = "batch/finish/pay", method = RequestMethod.POST)
+    public Object batchFinishPay(@RequestBody RepairDeviceQuotationInvoiceDto quotationInvoiceDto)
+            throws ServiceException, RestException {
+
+        String uuid = quotationInvoiceDto.getUserId();
+        if (StringUtils.isEmpty(uuid)) {
+            throw new RestException(RestCode.FieldIsEmpty);
+        }
+
+        Integer userId = systemUserService.getId(uuid);
+        if (null == userId) {
+            throw new RestException(RestCode.FieldValueNotSupport);
+        }
+
+        Map<String, String[]> devices = quotationInvoiceDto.getBatchDevices();
+        if (MapUtils.isEmpty(devices)) {
+            throw new RestException(RestCode.FieldIsEmpty, "devices");
+        }
+
+        Set<Entry<String, String[]>> deviceEntries = devices.entrySet();
+        for (Entry<String, String[]> entry : deviceEntries) {
+            String[] deviceInfo = entry.getValue();
+            Integer repairDeviceId = Integer.parseInt(deviceInfo[0]);
+            String sn = deviceInfo[1];
+            String desc = deviceInfo[2];
+            repairDeviceService.finishPay(userId, repairDeviceId, sn, desc);
+        }
 
         return true;
     }

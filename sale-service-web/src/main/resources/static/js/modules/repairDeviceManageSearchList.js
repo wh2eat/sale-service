@@ -68,20 +68,34 @@ layui.define([ 'jquery', 'layer', 'laytpl','table','laydate' ,'element','layout'
                     title : 'SN',
                     width : '10%'
                 },{
-                    field : 'model',
-                    title : '机型',
-                    width : '10%'
-                },{
                     field : 'status',
                     title : '状态',
-                    width : '10%',
+                    width : '15%',
                     templet: function(d){
                         return aRepairStatus.getDisplayText(d.status);
                     }
                 },{
+                    field : 'payStatus',
+                    title : '支付状态',
+                    templet:function(d){
+                          if(d.charge==0){
+                              return "免费维修";
+                          }else{ 
+                              if(0==d.payStatus){ 
+                                  return "收费维修(未支付)";
+                              }else if(1==d.payStatus){ 
+                                  return "收费维修(用户拒绝)";
+                              }else if(9==d.payStatus){ 
+                                  return "收费维修(已支付)";
+                              }else{
+                                return "处理中";
+                              } 
+                         }
+                    }
+                },{
                     field : 'detectUser',
                     title : '维修人',
-                    width : '8%',
+                    width : '10%',
                     templet: function(d){
                         var detectUser = d.detectUser;
                         if(undefined!==detectUser&&null!==detectUser){
@@ -92,7 +106,7 @@ layui.define([ 'jquery', 'layer', 'laytpl','table','laydate' ,'element','layout'
                 },{
                     field : 'quotationUser',
                     title : '报价人',
-                    width : '8%',
+                    width : '10%',
                     templet: function(d){
                         var quotationUser = d.quotationUser;
                         if(undefined!==quotationUser&&null!==quotationUser){
@@ -100,24 +114,6 @@ layui.define([ 'jquery', 'layer', 'laytpl','table','laydate' ,'element','layout'
                         }
                         return "";
                     }                    
-                },{
-                    field : 'payStatus',
-                    title : '支付状态',
-                    templet:function(d){
-                          if(rd.charge==0){
-                              return "免费维修";
-                          }else{ 
-                              if(0==rd.payStatus){ 
-                                  return "收费维修(未支付)";
-                              }else if(1==rd.payStatus){ 
-                                  return "收费维修(用户拒绝)";
-                              }else if(9==rd.payStatus){ 
-                                  return "收费维修(已支付)";
-                              }else{
-                                return "处理中";
-                              } 
-                         }
-                    }
                 },{
                     field : 'repairBackPackage',
                     title : '返客快递单号',

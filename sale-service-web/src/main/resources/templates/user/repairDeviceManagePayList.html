@@ -5,6 +5,12 @@
 <body class="layui-layout-body">
     
     <div layout:fragment="popup">
+    
+        <div id="repairDeviceBatchPayFormPage" lay-filter="repairDeviceBatchPayFormPageFilter"
+            fitWidth="800" fitHeight="380" class="sys-popup-page">
+                            
+        </div>
+    
         <div id="repairDevicePayFormPage" lay-filter="repairDevicePayFormPageFilter"
             fitWidth="800" fitHeight="380" class="sys-popup-page">
             <div align="center" style="padding:20px;">是否确定支付已完成？总费用:<label name="repairDeviceCostTotal"></label>（单位：人民币）</div>
@@ -29,6 +35,7 @@
 				<span>待支付设备列表</span>
 			</div>
 			<div class="layui-col-md4 layui-col-md-offset4" align="right">
+			     <button class="layui-btn layui-btn-sm" name="batch-finish-pay">完成支付</button>
 			</div>
 		</div>
 		<hr/>
