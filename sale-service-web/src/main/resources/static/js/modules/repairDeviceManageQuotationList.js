@@ -100,6 +100,11 @@ layui.define([ 'jquery', 'layer','laydate', 'table', 'aUser' ,'element','layout'
                     title : '总费用',
                     width : '12%',
                     templet: function(d){
+                        
+                        var costTotal = d.costTotal;
+                        if (undefined===costTotal || null===costTotal) {
+                            return "未报价";
+                        }
                         return d.costTotal+"（"+aDevice.getCurrency(d.currency)+"）";
                     }                       
                 },{

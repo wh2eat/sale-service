@@ -92,4 +92,27 @@ public class SystemExportTaskService implements ISystemExportTaskService {
         return exportTaskDao.getByDownloadId(downloadId);
     }
 
+    @Override
+    public void delete(Integer taskId, Integer userId) throws ServiceException {
+        SystemExportTaskDbo taskDbo = exportTaskDao.findById(taskId);
+        if (null == taskDbo) {
+            return;
+        }
+
+        if (!taskDbo.getUserId().equals(userId)) {
+            throw new ServiceException(ServiceCode.system_param_error, "userId error");
+        }
+
+        String storePath = taskDbo.getStorePath();
+        FileUtils.rm(storePath);
+        try {
+            exportTaskDao.delete(taskDbo);
+        }
+        catch (BaseDaoException e) {
+            throw new ServiceException(ServiceCode.system_db_exception, e.getMessage());
+        }
+        LOGGER.info("[][delete][success," + taskDbo + "]");
+
+    }
+
 }

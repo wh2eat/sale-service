@@ -458,6 +458,8 @@ layui.define([ 'jquery', 'layer', 'table','laydate' ,'element','layout','aform',
             "url":"api/browser/repair/device/get?id="+id+"&sn="+sn
         },
         function(repairDevice){
+            var manufactureTime  = repairDevice.manufactureTime;
+            repairDevice.manufactureTime = (undefined!=manufactureTime&&null!=manufactureTime)?(manufactureTime.substring(0,10)):"NA";
             form.val("repairDeviceFormFilter",repairDevice);
         });
     }

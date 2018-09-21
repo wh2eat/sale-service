@@ -6,6 +6,8 @@ public class ExportRepairDeviceDto {
 
     private String userId;
 
+    private Integer taskId;
+
     private SystemRepairDeviceExportDto param;
 
     public ExportRepairDeviceDto() {
@@ -33,4 +35,11 @@ public class ExportRepairDeviceDto {
         this.param = param;
     }
 
+    public Integer getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Integer taskId) {
+        this.taskId = taskId;
+    }
 }

@@ -11,6 +11,8 @@ public interface ISystemExportTaskService {
 
     public SystemExportTaskDbo get(String downloadId);
 
+    public void delete(Integer taskId, Integer userId) throws ServiceException;
+
     public boolean exportRepairDeivce(SystemRepairDeviceExportDto repairDeviceDto);
 
     public List<SystemExportTaskDbo> list(SystemExportTaskFo filter, PageInfo pageInfo) throws ServiceException;

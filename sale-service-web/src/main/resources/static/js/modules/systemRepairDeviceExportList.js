@@ -122,7 +122,7 @@ layui.define([ 'jquery', 'layer','ajx', 'table' ,'element','layout','aform','apo
         },{
             title : '操作',
             fixed: 'right', 
-            width:80, 
+            width:120, 
             align:'center', 
             toolbar: '#repairDeviceExportTableToolTpl'
         }  ] ],
@@ -148,7 +148,35 @@ layui.define([ 'jquery', 'layer','ajx', 'table' ,'element','layout','aform','apo
         return false;
     }
     
-    table.on('tool(repairDeviceExportListTableFilter)', function(obj){ 
+    table.on('tool(repairDeviceExportListTableFilter)', function(obj){
+        alog.d(obj);
+        var event = obj.event;
+        if('del'==event){
+            var data = obj.data;
+            if(!(-1==data.status||9==data.status)){
+                layer.alert("当前任务未完成，无法删除!");
+                return false;
+            }
+            
+            layer.confirm("是否确定删除任务："+data.taskName+"?",function(){
+                var postData={};
+                postData.taskId=data.id;
+                postData.userId=aUser.getId();
+                
+                ajx.post({
+                    "url" : "api/browser/sys/export/delete",
+                    "data" :  JSON.stringify(postData)
+                },
+                function(rtn) {
+                    if(rtn){
+                        layer.msg("操作成功!");
+                        reloadRepairDeviceExportListTable();
+                    }else{
+                        layer.msg("操作失败!");
+                    }
+                });
+            });
+        }
        
         return false;
     });

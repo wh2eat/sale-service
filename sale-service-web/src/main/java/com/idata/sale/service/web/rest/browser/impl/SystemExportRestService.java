@@ -125,4 +125,26 @@ public class SystemExportRestService {
         }
     }
 
+    @RequestMapping(path = "delete", method = RequestMethod.POST)
+    public Object deleteTask(@RequestBody ExportRepairDeviceDto exportRepairDeviceDto)
+            throws RestException, ServiceException {
+
+        String userId = exportRepairDeviceDto.getUserId();
+        if (null == userId) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("[][][userId is empty]");
+            }
+            throw new RestException(RestCode.FieldIsEmpty, "userId");
+        }
+
+        SystemUserDbo userDbo = userService.get(userId);
+        if (null == userDbo) {
+            throw new RestException(RestCode.FieldValueNotSupport, "userId");
+        }
+
+        systemExportService.delete(exportRepairDeviceDto.getTaskId(), userDbo.getId());
+
+        return true;
+    }
+
 }

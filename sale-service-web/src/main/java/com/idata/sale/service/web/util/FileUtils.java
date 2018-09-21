@@ -1,8 +1,15 @@
 package com.idata.sale.service.web.util;
 
+import java.io.File;
 import java.util.UUID;
 
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class FileUtils {
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
 
     public final static String getRandomFileName() {
         UUID uuid = UUID.randomUUID();
@@ -16,6 +23,19 @@ public class FileUtils {
             return "";
         }
         return path.substring(idx, path.length()).trim();
+    }
+
+    public final static void rm(String path) {
+
+        if (StringUtils.isEmpty(path)) {
+            return;
+        }
+
+        File file = new File(path);
+        if (file.exists()) {
+            file.delete();
+            LOGGER.info("[][rm][success,file:" + path + "]");
+        }
     }
 
     public static void main(String[] args) {
