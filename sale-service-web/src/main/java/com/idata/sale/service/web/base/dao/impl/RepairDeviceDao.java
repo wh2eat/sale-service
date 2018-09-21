@@ -240,10 +240,10 @@ public class RepairDeviceDao extends BaseDao<RepairDeviceDbo> {
                 }
 
                 if (RepairStatus.PayWait.getName().equals(status)) {
-                    sql += _or + "(pay_status=? and status>=? and quoted_price=?)";
-                    values.add(Device.PayNot);
-                    values.add(RepairStatus.CustomerConfirmFinish);
-                    values.add(Device.QuotedPrice);
+                    sql += _or + "(pay_status=? and status>=? and charge=?)";
+                    values.add(Device.PayNot.getCode());
+                    values.add(RepairStatus.CustomerConfirmFinish.getCode());
+                    values.add(Device.Charge.getCode());
                 }
 
                 sql += ")";
