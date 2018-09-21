@@ -745,7 +745,7 @@ public class RepairDeviceListService {
         return true;
     }
 
-    @RequestMapping(path = "bacth/confirm/quotation", method = RequestMethod.POST)
+    @RequestMapping(path = "batch/confirm/quotation", method = RequestMethod.POST)
     public Object batchConfirmQuotationInvoice(@RequestBody RepairDeviceQuotationInvoiceDto quotationInvoiceDto)
             throws ServiceException, RestException {
 
