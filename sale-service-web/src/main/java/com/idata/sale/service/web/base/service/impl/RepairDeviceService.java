@@ -463,7 +463,7 @@ public class RepairDeviceService implements IRepairDeviceService {
 
         String laborCostStr = repairDeviceDbo.getLaborCosts();
         if (StringUtils.isNotEmpty(laborCostStr)) {
-            laborCost = Integer.parseInt(laborCostStr);
+            laborCost = (int) (Double.parseDouble(laborCostStr) * 1000);
         }
 
         List<RepairDeviceQuotationInvoiceDbo> quotationInvoiceDbos = quotationInvoiceDao
@@ -485,13 +485,21 @@ public class RepairDeviceService implements IRepairDeviceService {
                 confirmIds.add(quotationInvoiceDbo.getId());
 
                 int quantity = quotationInvoiceDbo.getQuantity();
-                int priceUnit = Integer.parseInt(quotationInvoiceDbo.getPriceUnit());
-                int priceTotal = Integer.parseInt(quotationInvoiceDbo.getPriceTotal());
-                int total = quantity * priceUnit;
-                if (total != priceTotal) {
+                String priceUnitStr = quotationInvoiceDbo.getPriceUnit();
+                String priceTotalStr = quotationInvoiceDbo.getPriceTotal();
+                int total = (int) (quantity * (Double.parseDouble(priceUnitStr) * 1000));
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("[][][item total:" + total + "]");
+                }
+
+                if (total != (int) (Double.parseDouble(priceTotalStr) * 1000)) {
                     throw new ServiceException(ServiceCode.system_param_error, "priceTotal not equal total");
                 }
-                costTotal = costTotal + priceTotal;
+
+                costTotal = costTotal + total;
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("[][][costTotal:" + costTotal + "]");
+                }
             }
         }
         catch (ServiceException e) {
@@ -522,7 +530,7 @@ public class RepairDeviceService implements IRepairDeviceService {
                     "[][][costTotal:" + costTotal + ";repairDevice costTotal:" + (repairDevice.getCostTotal()) + "]");
         }
 
-        if (!(String.valueOf(costTotal).equals(repairDevice.getCostTotal()))) {
+        if (!(costTotal == (int) (Double.parseDouble(repairDevice.getCostTotal()) * 1000))) {
             throw new ServiceException(ServiceCode.system_param_error, "cost total not equal");
         }
 

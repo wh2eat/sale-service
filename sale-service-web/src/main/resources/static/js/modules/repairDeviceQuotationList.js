@@ -519,38 +519,40 @@ layui.define([ 'jquery', 'layer', 'table', 'atable' ,'element','layout','aform',
             
             var quantity = parseInt(rdqi.quotationInvoice.quantity);
             if(isNaN(quantity)){
-                console.log("continue");
                 continue;
             }
             console.log(typeof quantity);
-            
-            var priceUnit = parseInt(rdqi.quotationInvoice.priceUnit);
+                        
+            var priceUnit = parseFloat(rdqi.quotationInvoice.priceUnit);
             if(isNaN(priceUnit)){
-                console.log("continue");
                 continue;
             }
             
+            priceUnit = priceUnit*1000;
+            
             var total = quantity*priceUnit;
+            alog.d("item total:"+total);
             
-            rdqi.quotationInvoice.priceTotal = total;
+            rdqi.quotationInvoice.priceTotal = total/1000.00;
             
-            $("label[name='priceTotal_"+rdqi.id+"']").html(total);
+            $("label[name='priceTotal_"+rdqi.id+"']").html(total/1000.00);
             costTotal += total;
-        }
+        }        
+        costTotal = costTotal;
         alog.d("costTotal:"+costTotal);
         
         var laborCosts = $("form[name=repairDeviceForm]").find("input[name=laborCosts]").val();
         if(""===laborCosts){
             laborCosts = 0;
         }else{
-            laborCosts = parseInt(laborCosts);
+            laborCosts = parseFloat(laborCosts);
         }
         
         if(Number.NaN===costTotal){
             costTotal = 0;
         }
-        costTotal = laborCosts+costTotal;
-        $("form[name=repairDeviceForm]").find("input[name=costTotal]").val(costTotal);
+        costTotal = laborCosts*1000+costTotal;
+        $("form[name=repairDeviceForm]").find("input[name=costTotal]").val(costTotal/1000.00);
     }
     
     function updateRepairDeviceQuotationInvoices(repairDeviceDetectInvoiceId,fileName,fieldValue){

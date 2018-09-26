@@ -631,12 +631,8 @@ public class RepairDeviceListService {
         deviceDbo.setCostTotal(costTotal);
         deviceDbo.setCurrency(quotationInvoiceDto.getCurrency());
 
-        int laborCosts = 0;
         String laborCostsStr = quotationInvoiceDto.getLaborCosts();
-        if (StringUtils.isNotEmpty(laborCostsStr)) {
-            laborCosts = Integer.parseInt(laborCostsStr);
-        }
-        deviceDbo.setLaborCosts(Integer.toString(laborCosts));
+        deviceDbo.setLaborCosts(laborCostsStr);
         deviceDbo.setUpdateTime(new Date(System.currentTimeMillis()));
         deviceDbo.setQuotationUserId(userId);
 
