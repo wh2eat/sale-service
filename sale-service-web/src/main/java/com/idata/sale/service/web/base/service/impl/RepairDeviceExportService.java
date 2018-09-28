@@ -64,11 +64,12 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
             allPage += 1;
         }
 
-        int pageNum = 1;
         List<Map<String, Object>> allDevices = new ArrayList<>(count);
         try {
             for (int i = 1; i <= allPage; i++) {
-                List<Map<String, Object>> repairDevices = getRepairDevice(startTime, endTime, pageNum, pageSize);
+                List<Map<String, Object>> repairDevices = getRepairDevice(startTime, endTime, i, pageSize);
+                logger.info("[][export][pageNum:" + i + ",size:" + (null == repairDevices ? 0 : repairDevices.size())
+                        + "]");
                 if (CollectionUtils.isNotEmpty(repairDevices)) {
                     allDevices.addAll(repairDevices);
                 }
