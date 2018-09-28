@@ -473,9 +473,9 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
             if (crow > 1) {
                 int length = 4;
                 for (int j = 0; j < length; j++) {
-                    CellRangeAddress cra = new CellRangeAddress(rowIdx - crow - 1, rowIdx - 1, j, j);
+                    CellRangeAddress cra = new CellRangeAddress(rowIdx - crow, rowIdx - 1, j, j);
                     sheet.addMergedRegion(cra);
-                    int tRowIdx = rowIdx - crow - 1;
+                    int tRowIdx = rowIdx - crow;
                     int tColIdx = j;
 
                     HSSFCell nowCell = sheet.getRow(tRowIdx).getCell(tColIdx);
@@ -485,8 +485,8 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
                 int start = 8;
                 length = start + 7;
                 for (int j = start; j < length; j++) {
-                    sheet.addMergedRegion(new CellRangeAddress(rowIdx - crow - 1, rowIdx - 1, j, j));
-                    int tRowIdx = rowIdx - crow - 1;
+                    sheet.addMergedRegion(new CellRangeAddress(rowIdx - crow, rowIdx - 1, j, j));
+                    int tRowIdx = rowIdx - crow;
                     int tColIdx = j;
 
                     HSSFCell nowCell = sheet.getRow(tRowIdx).getCell(tColIdx);
@@ -496,8 +496,8 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
                 start = 17;
                 length = start + 6;
                 for (int j = start; j < length; j++) {
-                    sheet.addMergedRegion(new CellRangeAddress(rowIdx - crow - 1, rowIdx - 1, j, j));
-                    int tRowIdx = rowIdx - crow - 1;
+                    sheet.addMergedRegion(new CellRangeAddress(rowIdx - crow, rowIdx - 1, j, j));
+                    int tRowIdx = rowIdx - crow;
                     int tColIdx = j;
 
                     HSSFCell nowCell = sheet.getRow(tRowIdx).getCell(tColIdx);
@@ -508,8 +508,8 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
                 length = 26;
 
                 for (int j = start; j < length; j++) {
-                    sheet.addMergedRegion(new CellRangeAddress(rowIdx - crow - 1, rowIdx - 1, j, j));
-                    int tRowIdx = rowIdx - crow - 1;
+                    sheet.addMergedRegion(new CellRangeAddress(rowIdx - crow, rowIdx - 1, j, j));
+                    int tRowIdx = rowIdx - crow;
                     int tColIdx = j;
 
                     HSSFCell nowCell = sheet.getRow(tRowIdx).getCell(tColIdx);
