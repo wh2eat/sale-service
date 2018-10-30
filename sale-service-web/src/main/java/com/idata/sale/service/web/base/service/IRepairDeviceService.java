@@ -16,6 +16,8 @@ public interface IRepairDeviceService {
 
     public void delete(RepairDeviceDbo repairDeviceDbo);
 
+    public List<RepairDeviceDbo> getList4Ship(Integer repairBackPackageId);
+
     public List<RepairDeviceDbo> getList4SearchBySn(String sn);
 
     public List<RepairDeviceDbo> getList4SearchByPacakgeId(Integer pacakgeId);

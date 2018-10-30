@@ -153,6 +153,17 @@ public class RepairDeviceDbo implements RepairInvoiceDboSet, RepairPackageDboSet
     @Column
     private Date backTime;
 
+    @Column
+    private String shipRemark;
+
+    public String getShipRemark() {
+        return shipRemark;
+    }
+
+    public void setShipRemark(String shipRemark) {
+        this.shipRemark = shipRemark;
+    }
+
     private SystemUserDbo quotationUser;
 
     public SystemUserDbo getQuotationUser() {
@@ -588,11 +599,11 @@ public class RepairDeviceDbo implements RepairInvoiceDboSet, RepairPackageDboSet
                 + ", repairUserId=" + repairUserId + ", createUserId=" + createUserId + ", quotationUserId="
                 + quotationUserId + ", repairStartTime=" + repairStartTime + ", repairFinishTime=" + repairFinishTime
                 + ", detectStartTime=" + detectStartTime + ", detectFinishTime=" + detectFinishTime
-                + ", quotationFinishTime=" + quotationFinishTime + ", backTime=" + backTime + ", quotationUser="
-                + quotationUser + ", repairInvoice=" + repairInvoice + ", repairPackage=" + repairPackage
-                + ", createUser=" + createUser + ", detectUser=" + detectUser + ", repairUser=" + repairUser
-                + ", detectInvoices=" + detectInvoices + ", notStatus=" + notStatus + ", repairStationId="
-                + repairStationId + ", repairBackPackage=" + repairBackPackage + "]";
+                + ", quotationFinishTime=" + quotationFinishTime + ", backTime=" + backTime + ", shipRemark="
+                + shipRemark + ", quotationUser=" + quotationUser + ", repairInvoice=" + repairInvoice
+                + ", repairPackage=" + repairPackage + ", createUser=" + createUser + ", detectUser=" + detectUser
+                + ", repairUser=" + repairUser + ", detectInvoices=" + detectInvoices + ", notStatus=" + notStatus
+                + ", repairStationId=" + repairStationId + ", repairBackPackage=" + repairBackPackage + "]";
     }
 
     public Integer getNotStatus() {

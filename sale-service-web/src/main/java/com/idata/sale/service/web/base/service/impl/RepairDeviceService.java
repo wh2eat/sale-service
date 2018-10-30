@@ -806,4 +806,9 @@ public class RepairDeviceService implements IRepairDeviceService {
         }
     }
 
+    @Override
+    public List<RepairDeviceDbo> getList4Ship(Integer repairBackPackageId) {
+        return repairDeviceDao.getListByBackPackage(repairBackPackageId);
+    }
+
 }

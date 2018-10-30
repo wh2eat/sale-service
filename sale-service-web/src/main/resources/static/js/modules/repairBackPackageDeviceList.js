@@ -245,7 +245,7 @@ layui.define([ 'jquery', 'layer', 'table' ,'element','layout','aform','apopup','
                 field : 'deliveryTime',
                 title : '送修日期'
             },{
-                field : 'remark',
+                field : 'shipRemark',
                 title : '备注'
             },{
                 fixed: 'right', 
@@ -565,21 +565,60 @@ layui.define([ 'jquery', 'layer', 'table' ,'element','layout','aform','apopup','
     });
     
     function ship(sern){
-        var tip='是否确定返客包已发货？（请确保返客包已添加设备）';
-        layer.confirm(tip,function(lidx){
-            layer.close(lidx);
-            ajx.get({
-                "url":"api/browser/repair/back/package/ship?id="+sern
-            },function(rsd){
-                alog.d(rsd);
-                initRepairBackPackageData();
-            },function(code,msg){
-                layer.msg("操作失败，请确定返客包中设备完成维修（设备状态：待返客）！");
+        ajx.get({
+            "url":"api/browser/repair/back/package/get/ship/device/list?id="+sern
+        },function(rsd){
+            alog.d(rsd);
+            var datas = rsd;
+            var tip = null;
+            if(null!=datas){
+                tip = '<span class="layui-text">请检查设备附件以及配件是否完整！</span>';
+                tip += "<table class='layui-table'>";
+                tip += "<tr><td>SN</td><td>附件</td><td>备注</td></tr>";
+                var llength = datas.length;
+                for(var ii=0;ii<llength;ii++){
+                    tip +="<tr>";
+                    tip +="<td>"+datas[ii].sn+"</td>";
+                    tip +="<td>"+datas[ii].attachment+"</td>";
+                    tip +="<td>"+datas[ii].shipRemark+"</td>";
+                    tip +="</tr>";
+                }
+                tip += "</table>";
+            }else{
+                tip='<span class="layui-text">请确认设备已打包并完成发货！</span>';
+            }
+            alog.d("open ship");
+            layer.open({
+                id:"repairBackPackageShipConfirmPagePopup",
+                type: 1,
+                title:  ["发货确认", 'font-size:18px;'], //不显示标题栏
+                skin: 'layui-layer-rim', //加上边框
+                shade: true,
+                area:'500px',
+                offset: 'auto',
+                content: tip,
+                btn: ['完成发货', '取消'] //可以无限个按钮
+                ,yes: function(index, layero){
+                  layer.close(index);
+                  ajx.get({
+                      "url":"api/browser/repair/back/package/ship?id="+sern
+                  },function(rsd11){
+                      alog.d(rsd11);
+                      initRepairBackPackageData();
+                  },function(code,msg){
+                      layer.msg("操作失败，请确定返客包中设备完成维修（设备状态：待返客）！");
+                  });
+                },btn2: function(index, layero){
+                    layer.close(index);
+                },
+                success: function(layero, index){
+                    alog.d("success");
+                }
             });
-        })
+        },function(code,msg){
+            layer.msg("数据加载失败！");
+        });
     }
-    
-    
     exports('repairBackPackageDeviceList', {}); // 注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });
 

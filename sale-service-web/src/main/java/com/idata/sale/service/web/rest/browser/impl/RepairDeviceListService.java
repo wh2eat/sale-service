@@ -635,6 +635,7 @@ public class RepairDeviceListService {
         deviceDbo.setLaborCosts(laborCostsStr);
         deviceDbo.setUpdateTime(new Date(System.currentTimeMillis()));
         deviceDbo.setQuotationUserId(userId);
+        deviceDbo.setShipRemark(quotationInvoiceDto.getShipRemark());
 
         repairDeviceService.update(deviceDbo);
 

@@ -59,7 +59,6 @@ layui.define([ 'jquery', 'layer', 'table' ,'laydate','element','layout','aform',
                     field : 'model',
                     title : '机型',
                     width : '15%'
-                        
                 },{
                     field : 'repairBackPacakge',
                     title : '返客快递单',
@@ -78,7 +77,7 @@ layui.define([ 'jquery', 'layer', 'table' ,'laydate','element','layout','aform',
                     field : 'createTime',
                     title : '送修时间'
                 },{
-                    field : 'remark',
+                    field : 'shipRemark',
                     title : '备注'
                 }  ] ],
                 url : repairDeviceTableUrl,
@@ -127,7 +126,6 @@ layui.define([ 'jquery', 'layer', 'table' ,'laydate','element','layout','aform',
                 ids.push(data.id);
             }
             alog.d(ids);
-            
             ajx.post({
                 "url" : "api/browser/repair/device/finish/confirm",
                 "data" :  JSON.stringify({"repairDeviceIds":ids})

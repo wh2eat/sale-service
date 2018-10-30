@@ -106,7 +106,7 @@ layui.define([ 'jquery', 'layer','aUser', 'table','laydate','aSystemCustomer' ,'
                     title : "送修时间",
                     width : 80
                 },{
-                    field:'remark',
+                    field:'shipRemark',
                     title:"备注"
                 } ] ],
                 url : repairDeviceTableUrl,

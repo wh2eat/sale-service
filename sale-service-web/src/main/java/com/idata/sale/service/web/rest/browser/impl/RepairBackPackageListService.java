@@ -1,5 +1,6 @@
 package com.idata.sale.service.web.rest.browser.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -18,6 +19,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.idata.sale.service.web.base.dao.PageInfo;
 import com.idata.sale.service.web.base.dao.dbo.RepairBackPackageDbo;
+import com.idata.sale.service.web.base.dao.dbo.RepairDeviceDbo;
 import com.idata.sale.service.web.base.service.IRepairBackPackageService;
 import com.idata.sale.service.web.base.service.IRepairDeviceService;
 import com.idata.sale.service.web.base.service.ISystemRepairStationService;
@@ -76,6 +78,23 @@ public class RepairBackPackageListService {
         finally {
             pageInfo = null;
         }
+    }
+
+    @RequestMapping(path = "get/ship/device/list", method = RequestMethod.GET)
+    public Object getShipDeviceList(@RequestParam("id") String serialNumber) throws ServiceException, RestException {
+        RepairBackPackageDbo repairBackPackageDbo = repairBackPackageService.get(serialNumber);
+        List<RepairDeviceDbo> repairDeviceDbos = repairDeviceService.getList4Ship(repairBackPackageDbo.getId());
+        if (CollectionUtils.isNotEmpty(repairDeviceDbos)) {
+            List<RepairDeviceDbo> deviceDbos = new ArrayList<>();
+            for (RepairDeviceDbo repairDeviceDbo : repairDeviceDbos) {
+                String shipRemark = repairDeviceDbo.getShipRemark();
+                if (StringUtils.isNotEmpty(shipRemark) || StringUtils.isNotBlank(repairDeviceDbo.getAttachment())) {
+                    deviceDbos.add(repairDeviceDbo);
+                }
+            }
+            return deviceDbos;
+        }
+        return null;
     }
 
     @Autowired

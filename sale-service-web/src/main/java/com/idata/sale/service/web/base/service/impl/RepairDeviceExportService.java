@@ -430,7 +430,8 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
                 cell = row.createCell(18);
                 cell.setCellType(Cell.CELL_TYPE_STRING);
                 String payStatus = String.valueOf(rdMap.get("pay_status"));
-                cell.setCellValue("1".equals(charge) ? ("9".equals(payStatus) ? "已付款" : "未付款") : "");
+                cell.setCellValue("1".equals(charge)
+                        ? ("9".equals(payStatus) ? "已付款" : ("1".equals(payStatus) ? "用户拒绝付款" : "未付款")) : "");
 
                 // 付款金额
                 cell = row.createCell(19);
@@ -471,7 +472,7 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
             }
 
             if (crow > 1) {
-                int length = 4;
+                int length = 5;
                 for (int j = 0; j < length; j++) {
                     CellRangeAddress cra = new CellRangeAddress(rowIdx - crow, rowIdx - 1, j, j);
                     sheet.addMergedRegion(cra);

@@ -20,6 +20,8 @@ public class RepairDeviceQuotationInvoiceDto {
 
     private String confirmRemark;
 
+    private String shipRemark;
+
     private List<RepairDeviceDbo> devices;
 
     private Map<String, String[]> batchDevices;
@@ -99,9 +101,10 @@ public class RepairDeviceQuotationInvoiceDto {
     public String toString() {
         return "RepairDeviceQuotationInvoiceDto [userId=" + userId + ", sn=" + sn + ", id=" + id + ", detectInvoiceId="
                 + detectInvoiceId + ", confirmStatus=" + confirmStatus + ", confirmRemark=" + confirmRemark
-                + ", devices=" + devices + ", batchDevices=" + batchDevices + ", payType=" + payType
-                + ", payDescription=" + payDescription + ", costTotal=" + costTotal + ", laborCosts=" + laborCosts
-                + ", currency=" + currency + ", quotationInvoices=" + quotationInvoices + "]";
+                + ", shipRemark=" + shipRemark + ", devices=" + devices + ", batchDevices=" + batchDevices
+                + ", payType=" + payType + ", payDescription=" + payDescription + ", costTotal=" + costTotal
+                + ", laborCosts=" + laborCosts + ", currency=" + currency + ", quotationInvoices=" + quotationInvoices
+                + "]";
     }
 
     public String getCostTotal() {
@@ -158,5 +161,13 @@ public class RepairDeviceQuotationInvoiceDto {
 
     public void setBatchDevices(Map<String, String[]> batchDevices) {
         this.batchDevices = batchDevices;
+    }
+
+    public String getShipRemark() {
+        return shipRemark;
+    }
+
+    public void setShipRemark(String shipRemark) {
+        this.shipRemark = shipRemark;
     }
 }

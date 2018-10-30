@@ -42,7 +42,8 @@ public class SystemExportTaskService implements ISystemExportTaskService {
 
         SystemExportTaskDbo systemExportTaskDbo = new SystemExportTaskDbo();
 
-        systemExportTaskDbo.setDownloadFileName(repairDeviceDto.getExportName());
+        systemExportTaskDbo.setDownloadFileName(repairDeviceDto.getExportName() + "[" + repairDeviceDto.getStartTime()
+                + " 至 " + repairDeviceDto.getEndTime() + "]");
         systemExportTaskDbo.setTaskName(repairDeviceDto.getExportName());
 
         systemExportTaskDbo.setStatus(SystemExportTaskStatus.Created.code);
