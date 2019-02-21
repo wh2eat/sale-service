@@ -240,7 +240,7 @@ layui.define([ 'jquery', 'layer','aUser', 'table','laydate','aSystemCustomer' ,'
     
     $("#repairBackPackageForm").submit(function(){
         
-        $("button[type='submit']").attr("disabled","disabled");
+        $("button[name='repairBackPackageFromPageSubmit']").attr("disabled","disabled");
         $("button[lay-filter='repairBackPackageFormRestFilter']").attr("disabled","disabled");
         
         var repairBackPackageInfo = aform.toObject($("#repairBackPackageForm"));
@@ -254,6 +254,8 @@ layui.define([ 'jquery', 'layer','aUser', 'table','laydate','aSystemCustomer' ,'
             'beforeSend' : function(request) {
             },
             "success" : function(resp) {
+                $("button[name='repairBackPackageFromPageSubmit']").removeAttr("disabled");
+                $("button[lay-filter='repairBackPackageFormRestFilter']").removeAttr("disabled");
                 alog.d(resp);
                 var code = resp.code;
                 if (100==code&&resp.rtn) {
@@ -266,6 +268,8 @@ layui.define([ 'jquery', 'layer','aUser', 'table','laydate','aSystemCustomer' ,'
                 }
             },
             "error":function(XMLHttpRequest, textStatus, errorThrown){
+                $("button[name='repairBackPackageFromPageSubmit']").removeAttr("disabled");
+                $("button[lay-filter='repairBackPackageFormRestFilter']").removeAttr("disabled");
             }
         });
         
