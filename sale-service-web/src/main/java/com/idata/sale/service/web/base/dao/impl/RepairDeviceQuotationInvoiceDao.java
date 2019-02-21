@@ -120,7 +120,7 @@ public class RepairDeviceQuotationInvoiceDao extends BaseDao<RepairDeviceQuotati
         List<Map<String, Object>> maps = find(sql.toString(), null);
 
         if (CollectionUtils.isEmpty(maps)) {
-            return null;
+            return new HashMap<>(1);
         }
 
         Map<String, List<Map<String, Object>>> repairDeviceQuotationInvoiceMap = new HashMap<>();

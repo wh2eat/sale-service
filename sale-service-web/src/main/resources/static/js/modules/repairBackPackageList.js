@@ -239,7 +239,9 @@ layui.define([ 'jquery', 'layer', 'table' ,'element','layout','aform','apopup','
     
     $("#repairBackPackageForm").submit(function(){
         
-        $("button[type='submit']").attr("disabled","disabled");
+        console.log("repairBackPackageForm submit");
+        
+        $("button[name='repairBackPackageFormSubmit']").attr("disabled","disabled");
         $("button[lay-filter='repairBackPackageFormRestFilter']").attr("disabled","disabled");
         
         var repairBackPackageInfo = aform.toObject($("#repairBackPackageForm"));
@@ -274,8 +276,13 @@ layui.define([ 'jquery', 'layer', 'table' ,'element','layout','aform','apopup','
                         layer.msg("返客包修改失败!");
                     }
                 }
+                $("button[name='repairBackPackageFormSubmit']").removeAttr("disabled");
+                $("button[lay-filter='repairBackPackageFormRestFilter']").removeAttr("disabled");
+                
             },
             "error":function(XMLHttpRequest, textStatus, errorThrown){
+                $("button[name='repairBackPackageFormSubmit']").removeAttr("disabled");
+                $("button[lay-filter='repairBackPackageFormRestFilter']").removeAttr("disabled");
             }
         });
         

@@ -225,7 +225,7 @@ public class RepairPackageDao extends BaseDao<RepairPackageDbo> {
             return idMap;
         }
 
-        return null;
+        return new HashMap<>(1);
 
     }
 

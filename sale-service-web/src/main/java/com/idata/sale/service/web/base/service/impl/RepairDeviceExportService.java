@@ -64,6 +64,8 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
             allPage += 1;
         }
 
+        logger.info("[][export][allPage:" + allPage + ",pageSize:" + pageSize + "]");
+
         List<Map<String, Object>> allDevices = new ArrayList<>(count);
         try {
             for (int i = 1; i <= allPage; i++) {
@@ -77,10 +79,9 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
                     break;
                 }
             }
-
         }
-        catch (SQLException e) {
-            logger.error("[][][]", e);
+        catch (Exception e) {
+            logger.error("[][][" + e.getLocalizedMessage() + "]", e);
         }
 
         try {
@@ -182,11 +183,9 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
 
         Map<String, List<Map<String, Object>>> repairDetectMaps = deviceDetectInvoiceDao
                 .getRepairDeviceDetectInvoiceMap(repairDeviceIds);
-        System.out.println("[][][repairDetectMaps:" + repairDetectMaps.toString() + "]");
 
         Map<String, List<Map<String, Object>>> repairQuotationMaps = deviceQuotationInvoiceDao
                 .getRepairDeviceQuotationInvoiceMap(repairDeviceIds);
-        System.out.println("[][][repairQuotationMaps:" + repairQuotationMaps.toString() + "]");
 
         List<Map<String, Object>> exportMaps = new ArrayList<>();
 
@@ -229,14 +228,18 @@ public class RepairDeviceExportService implements IRepairDeviceExportService {
                 exprotMap.put("repair_detect_invoices", repairDetectMaps.get(rdid));
             }
             else {
-                System.err.println("[][][repairDetectMaps not contains:" + rdid + "]");
+                if (logger.isDebugEnabled()) {
+                    logger.debug("[][][repairDetectMaps not contains:" + rdid + "]");
+                }
             }
 
             if (repairQuotationMaps.containsKey(rdid)) {
                 exprotMap.put("repair_quotation_invoices", repairQuotationMaps.get(rdid));
             }
             else {
-                System.err.println("[][][repairQuotationMaps not contains:" + rdid + "]");
+                if (logger.isDebugEnabled()) {
+                    logger.debug("[][][repairQuotationMaps not contains:" + rdid + "]");
+                }
             }
 
             exportMaps.add(exprotMap);

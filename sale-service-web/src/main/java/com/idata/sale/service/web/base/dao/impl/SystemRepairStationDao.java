@@ -123,7 +123,7 @@ public class SystemRepairStationDao extends BaseDao<SystemRepairStationDbo> {
             return map;
         }
 
-        return null;
+        return new HashMap<>(1);
     }
 
 }

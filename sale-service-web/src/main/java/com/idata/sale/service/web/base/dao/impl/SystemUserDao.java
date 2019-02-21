@@ -241,7 +241,7 @@ public class SystemUserDao extends BaseDao<SystemUserDbo> {
             return map;
         }
 
-        return null;
+        return new HashMap<>(1);
     }
 
 }

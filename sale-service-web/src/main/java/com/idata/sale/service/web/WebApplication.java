@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @Configuration
 @EnableAutoConfiguration
 public class WebApplication extends SpringBootServletInitializer {
+    
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(WebApplication.class);

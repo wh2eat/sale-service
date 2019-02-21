@@ -154,7 +154,7 @@ public class RepairBackPackageDao extends BaseDao<RepairBackPackageDbo> {
 
         try {
             if (CollectionUtils.isEmpty(maps)) {
-                return null;
+                return new HashMap<>(1);
             }
 
             Map<String, Map<String, Object>> repairBackPacakgeMap = new HashMap<>();

@@ -104,7 +104,7 @@ public class RepairDeviceDetectInvoiceDao extends BaseDao<RepairDeviceDetectInvo
         List<Map<String, Object>> maps = find(sql.toString(), null);
 
         if (CollectionUtils.isEmpty(maps)) {
-            return null;
+            return new HashMap<>(1);
         }
 
         Map<String, List<Map<String, Object>>> repairDeviceDetectInvoiceMap = new HashMap<String, List<Map<String, Object>>>();
