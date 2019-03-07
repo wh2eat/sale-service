@@ -1,0 +1,156 @@
+<html>
+<head>
+<style type="text/css">
+
+</style>
+<title>服务与支持</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"  media="all">
+<link rel="stylesheet" th:href="@{/static/layui/css/layui.mobile.css}"  media="all">
+<style type="text/css">
+.layui-form{
+}
+
+.layui-form-label{
+/*     width:15%; */
+}
+.layui-input-block{
+
+}
+
+.small-screen{
+        display:none;
+}
+@media screen and (min-width: 300px) {
+    .layui-form-label{
+        display:none;
+        width:0;
+    }
+    
+    .layui-input-block{
+        width:100%;
+        float:clear;
+        margin-left:0;
+    }
+    
+    .layui-form-item{
+        float:clear;
+    }
+    
+    .small-screen{
+        display:inline;
+        padding-top:10px;
+    }
+}
+</style>
+</head>
+<body style="background-color: #eeeeee;">
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+		<div style="background-color: #fff;padding:10px;padding-top:20px;">
+                    <div class="layui-row" style="text-align:center;">
+                        <span style="font-size: 20px; font-weight: 300;">问题反馈</span>
+                        <hr style="color: #aaa;">
+                    </div>
+                    <div class="layui-row">
+                        <form class="layui-form" th:action="@{/repair/deivce/search}"
+                            method="post" name="suggestionForm" lay-filter="suggestionFormFilter">
+                                                        
+                            <div class="layui-form-item">
+                                <label class="layui-form-label"><span style="color:red;">*</span>问题类型:</label>
+                                <div class="layui-input-block">
+                                  <select name="category" lay-verify="required" placeholder="选择问题类型">
+                                    <option value="">问题类型</option>
+                                    <option value="触屏无反应">1、触屏无反应</option>
+                                    <option value="自动重启">2、自动重启</option>
+                                    <option value="不充电">3、不充电</option>
+                                    <option value="扫描不出光">4、扫描不出光</option>
+                                    <option value="无法开机">5、无法开机</option>
+                                    <option value="其他">6、其他</option>
+                                  </select>
+                                </div>
+                             </div>
+                             <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label"><span style="color:red;">*</span>不良数量:</label>
+                                <div class="layui-input-block">
+                                  <input type="text" name="deviceNumber" placeholder="不良数量"  lay-verify="required|number"  autocomplete="off" class="layui-input">
+                                </div>
+                             </div>
+                             <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label"><span style="color:red;">*</span>问题描述:</label>
+                                <div class="layui-input-block">
+                                  <textarea name="desc" lay-verify="required" placeholder="问题描述" class="layui-textarea"></textarea>
+                                </div>
+                             </div>
+                             
+                             <div class="layui-form-item">
+                                <label class="layui-form-label">
+                                 <span style="color:red;">*</span>联系人:
+                                </label>
+                                <div class="layui-input-block">
+                                  <input type="text" name="contact" placeholder="联系人" lay-verify="required"  autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                             
+                             <div class="layui-form-item">
+                                <label class="layui-form-label">
+                                 <span style="color:red;">*</span>手机号:
+                                </label>
+                                <div class="layui-input-block">
+                                  <input type="text" name="phoneNumber" placeholder="手机号"  lay-verify="required|phone"  autocomplete="off" class="layui-input">
+                                </div>
+                                
+                                <div class="layui-input-block layui-word-aux">
+                                                                    紧急情况时，工程师会与您电话联系， <span style="color:red;">请填写正确手机号</span> !
+                                </div>
+                            </div>
+                             
+                             <div class="layui-form-item">
+                                <label class="layui-form-label">
+                                 <span style="color:red;">*</span>上传附件:
+                                </label>
+                                <div class="layui-input-block">
+                                    <button class="layui-btn layui-btn-sm layui-btn-primary" name="uploadAttchmentButton">
+                                        <i class="layui-icon">&#xe608;</i>上传附件
+                                    </button>
+                                </div>
+                                <div class="layui-input-block layui-text">
+                                  <div class='layui-word-aux'>可上传<span style="color:red;">5个附件</span></div>
+                                  <div class='layui-word-aux' style="word-break:break-all;">每个附件大小不得超过8M。附件支持的格式有:'jpg', 'bmp', 'png','gif','txt','rar','zip','doc','docx','ini','conf','eml','pdf', 'xlsx', 'xls'</div>
+                                </div>
+                            </div>
+                            
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                  <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="suggestionSubmitFilter">立即提交</button>
+                                </div>
+                                <div class="layui-input-block" style="margin-top:10px;">
+                                    <button type="reset" class="layui-btn layui-btn-primary layui-btn-fluid">重置</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+	
+	<script type="text/javascript" th:src="@{/static/layui/layui.js}"></script>
+	<script type="text/javascript" th:src="@{http://res.wx.qq.com/open/js/jweixin-1.4.0.js}"></script>
+	<script th:inline="javascript">
+	
+// 	   layui.extend({
+// 	       jweixin: '{/}http://res.wx.qq.com/open/js/jweixin-1.4.0' // {/}的意思即代表采用自有路径，即不跟随 base 路径
+// 	   })
+	   
+	    var modulesPath = /*[[@{/static/js/modules/}]]*/ '/static/js/modules/';
+	    var jsVersion=[[${jsVersion}]];
+        layui.config({
+            base : modulesPath //你存放新模块的目录，注意，不是layui的模块目录
+            ,version : jsVersion
+        }).use('suggestion'); //加载入口
+    </script>
+</body>
+</html>

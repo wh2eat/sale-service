@@ -1,6 +1,7 @@
 package com.idata.sale.service.web.base.service.impl;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.Date;
@@ -387,11 +388,36 @@ public class SystemUserService implements ISystemUserService {
 
     public static void main(String[] args) {
         Integer userId = 1;
-        String udid = "";
+        String udid = "bcceb108-56ac-3967-9a9a-bd30db69461a";
 
         String all = userId + "&" + udid;
         all = DigestUtils.md5Hex(all);
         String key = all.substring(0, 4) + all.substring(all.length() - 4, all.length());
+
+        String encryptContent = "sooPhzNVB6%2FyQTn2TbgDWz2BsqhSjUw6f1HBWKLfXlcIjQwDy72ZMTt75NhTlugr%0D%0A";
+
+        try {
+            encryptContent = URLDecoder.decode(encryptContent, "utf-8");
+            System.out.println(encryptContent);
+            encryptContent = encryptContent.replaceAll("\r|\n", "");
+            System.out.println(encryptContent);
+        }
+        catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        encryptContent = "sooPhzNVB6/yQTn2TbgDWz2BsqhSjUw6f1HBWKLfXlcIjQwDy72ZMTt75NhTlugr";
+
+        String content = AesUtil.decrypt(encryptContent, key);
+        System.out.println(content);
+
+        // String str = URLEncoder.encode(udid, "utf-8") + "&" +
+        // URLEncoder.encode(password, "utf-8");
+        // String strMd5 = DigestUtils.md5Hex(str) + userEncryptSalt;
+
+        // return URLEncoder.encode(AesUtil.encrypt(strMd5, userKey), "utf-8");
+
     }
 
 }

@@ -65,7 +65,5 @@ public class SystemAsyncConfigurer implements AsyncConfigurer {
             }
             LOGGER.info("=========== SystemAsync UncaughtException end ================");
         }
-
     }
-
 }

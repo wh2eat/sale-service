@@ -45,6 +45,12 @@ public class LoginController extends BaseController {
         return "search";
     }
 
+    @RequestMapping("/suggestion")
+    public String suggestion() {
+
+        return "suggestion";
+    }
+
     @Autowired
     private ISystemUserService userServcice;
 
