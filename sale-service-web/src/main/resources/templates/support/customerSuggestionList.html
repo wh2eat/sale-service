@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"
+	media="all">
+<link rel="stylesheet" th:href="@{/static/layui/css/layui.mobile.css}"
+	media="all">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<style type="text/css">
+.layui-table-page .layui-laypage-skip{
+    display:none;
+}
+
+.layui-table-page span.layui-laypage-count{
+    padding-left:10px;
+    display:inline-block;
+}
+.layui-table-page select{
+ height:25px;
+ padding:0; 
+}
+
+</style>
+</head>
+<body>
+
+	<div style="width: auto; padding:10px;">
+		<div class="layui-row">
+			<div class="layui-col-md4" align="left">
+				<span>客户反馈列表</span>
+			</div>
+			<div th:if="${session.loginUser.type}==10"
+				class="layui-col-md4 layui-col-md-offset4" align="right"></div>
+		</div>
+		<hr>
+		<script type="text/html" id="customerSuggestionListTableToolTpl">
+            <a class="layui-btn layui-btn-xs" lay-event="detail" href="/web/support/index?target=detail&uid={{d.serialNumber}}&id={{d.id}}">详情</a>
+        </script>
+		<table id="customerSuggestionListTable" class="layui-table"
+			lay-filter="customerSuggestionListTableFilter">
+		</table>
+	</div>
+
+	<script type="text/javascript" th:src="@{/static/layui/layui.js}"></script>
+	<script th:inline="javascript">
+            var modulesPath = /*[[@{/static/js/modules/}]]*/'/static/js/modules/';
+            var jsVersion=[[${jsVersion}]];
+            layui.config({
+                base : modulesPath
+                ,version : jsVersion
+            //你存放新模块的目录，注意，不是layui的模块目录
+            }).use('customerSuggestionList'); //加载入口
+        </script>
+</body>
+</html>

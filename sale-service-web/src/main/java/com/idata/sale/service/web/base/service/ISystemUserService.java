@@ -11,6 +11,8 @@ public interface ISystemUserService {
 
     public SystemUserDto login(String loginName, String password);
 
+    public SystemUserDto loginSupport(String loginName, String password);
+
     public void add(SystemUserDbo userDbo) throws ServiceException;
 
     public boolean update(SystemUserDbo userDbo) throws ServiceException;

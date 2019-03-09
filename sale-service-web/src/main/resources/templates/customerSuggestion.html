@@ -23,6 +23,16 @@
 .small-screen{
         display:none;
 }
+
+.upload-attachment{
+    display:block;
+    margin-bottom:10px;
+}
+
+.layui-icon-delete{
+    font-size:18px;
+}
+
 @media screen and (min-width: 300px) {
     .layui-form-label{
         display:none;
@@ -58,7 +68,7 @@
                         <hr style="color: #aaa;">
                     </div>
                     <div class="layui-row">
-                        <form class="layui-form" th:action="@{/repair/deivce/search}"
+                        <form class="layui-form"
                             method="post" name="suggestionForm" lay-filter="suggestionFormFilter">
                                                         
                             <div class="layui-form-item">
@@ -78,7 +88,9 @@
                              <div class="layui-form-item layui-form-text">
                                 <label class="layui-form-label"><span style="color:red;">*</span>不良数量:</label>
                                 <div class="layui-input-block">
-                                  <input type="text" name="deviceNumber" placeholder="不良数量"  lay-verify="required|number"  autocomplete="off" class="layui-input">
+                                  <input type="text" name="deviceNumber" placeholder="不良数量"  lay-verify="required|number" 
+                                            value="1"  autocomplete="off" class="layui-input" style="width:20%;display:inline;">
+                                  <span style="display:inline;">台</span><span style="display:inline;" class="layui-word-aux">（设备数量）</span>
                                 </div>
                              </div>
                              <div class="layui-form-item layui-form-text">
@@ -97,7 +109,7 @@
                                 </div>
                             </div>
                              
-                             <div class="layui-form-item">
+                             <div class="layui-form-item" style="margin-bottom:0;padding-bottom:0;">
                                 <label class="layui-form-label">
                                  <span style="color:red;">*</span>手机号:
                                 </label>
@@ -105,29 +117,38 @@
                                   <input type="text" name="phoneNumber" placeholder="手机号"  lay-verify="required|phone"  autocomplete="off" class="layui-input">
                                 </div>
                                 
-                                <div class="layui-input-block layui-word-aux">
-                                                                    紧急情况时，工程师会与您电话联系， <span style="color:red;">请填写正确手机号</span> !
-                                </div>
+<!--                                 <div class="layui-input-block layui-word-aux"> -->
+<!--                                                                     紧急情况时，工程师会与您电话联系， <span style="color:red;">请填写正确手机号</span> ! -->
+<!--                                 </div> -->
                             </div>
                              
                              <div class="layui-form-item">
                                 <label class="layui-form-label">
                                  <span style="color:red;">*</span>上传附件:
                                 </label>
+                                <div class="layui-input-block" name="uploadAttachmentList" style="">
+                                </div>
                                 <div class="layui-input-block">
-                                    <button class="layui-btn layui-btn-sm layui-btn-primary" name="uploadAttchmentButton">
+                                    <a class="layui-btn layui-btn-primary layui-show" lay-data="{accept: 'file'}" id="uploadAttchmentButton">
                                         <i class="layui-icon">&#xe608;</i>上传附件
-                                    </button>
+                                    </a>
                                 </div>
                                 <div class="layui-input-block layui-text">
-                                  <div class='layui-word-aux'>可上传<span style="color:red;">5个附件</span></div>
-                                  <div class='layui-word-aux' style="word-break:break-all;">每个附件大小不得超过8M。附件支持的格式有:'jpg', 'bmp', 'png','gif','txt','rar','zip','doc','docx','ini','conf','eml','pdf', 'xlsx', 'xls'</div>
+                                  <div class='layui-word-aux'>最多上传&nbsp;<span style="color:red;">9个</span>附件&nbsp;&nbsp;可上传：<span style="color:red;" name="remainAmount">9</span>个</div>
+                                  <div class='layui-word-aux' style="word-break:break-all;">
+                                                                        附件说明：
+                                    <ul>
+                                        <li>电池内仓照片</li>
+                                        <li>外箱批次号照片</li>
+                                        <li>设备异常视频</li>
+                                    </ul>
+                                  </div>
                                 </div>
                             </div>
                             
                             <div class="layui-form-item">
                                 <div class="layui-input-block">
-                                  <button class="layui-btn layui-btn-fluid" lay-submit lay-filter="suggestionSubmitFilter">立即提交</button>
+                                  <button class="layui-btn layui-btn-fluid"  lay-submit lay-filter="suggestionSubmitFilter">立即提交</button>
                                 </div>
                                 <div class="layui-input-block" style="margin-top:10px;">
                                     <button type="reset" class="layui-btn layui-btn-primary layui-btn-fluid">重置</button>
@@ -150,7 +171,7 @@
         layui.config({
             base : modulesPath //你存放新模块的目录，注意，不是layui的模块目录
             ,version : jsVersion
-        }).use('suggestion'); //加载入口
+        }).use('customerSuggestion'); //加载入口
     </script>
 </body>
 </html>

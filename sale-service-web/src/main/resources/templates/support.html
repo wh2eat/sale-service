@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="stylesheet" th:href="@{/static/layui/css/layui.css}"  media="all">
+<link rel="stylesheet" th:href="@{/static/layui/css/layui.mobile.css}"  media="all">
+<!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+<!--[if lt IE 9]>
+  <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+  <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+<style type="text/css">
+
+.field-validate-error{
+    font-size:16px;
+    color:red;
+    display:block;
+}
+
+@media screen and (min-width: 300px) {
+    
+    .layui-form-label{
+        display:none;
+        width:0;
+    }
+    
+    .layui-input-block{
+        width:100%;
+        float:clear;
+        margin-left:0;
+    }
+    
+    .layui-form-item{
+        float:clear;
+    }
+}
+
+</style>
+<title>服务与支持——登陆</title>
+</head>
+<body>
+    
+    <div style="width:auto;padding-left:20px;padding-right:20px;">
+        <div class="layui-row" style="margin-top:20px;font-size:20px;font-weight:blod;">
+        <span>管理员登陆</span>
+        <hr>
+        <span th:if="${100000==errorCode}" class="field-validate-error">未知异常请联系管理员！</span>
+        <span th:if="${100001==errorCode}" class="field-validate-error">没有找到用户！</span>
+        <span th:if="${100101==errorCode}" class="field-validate-error">用户名或密码错误！</span>
+        <span th:if="${100102==errorCode}" class="field-validate-error">当前用户没有登陆权限！</span>
+    </div>
+    <form class="layui-form" th:action="@{/support/login}"  method="post">
+              <div class="layui-form-item">
+                <label class="layui-form-label">用户名称</label>
+                <div class="layui-input-block">
+                  <input type="text" name="loginName" required  lay-verify="required" placeholder="请输入用户名称" autocomplete="off" class="layui-input" th:value="${loginName}">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-block">
+                  <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input" th:value="${password}">
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <div class="layui-input-block" align="center">
+                  <button class="layui-btn" style="width:100%"  lay-submit lay-filter="loginFormFilter">登陆</button>
+                </div>
+                <div class="layui-input-block" align="center">
+                  <button type="reset" style="width:100%;margin-top:10px;" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+              </div>
+        </form>
+    </div>
+    <script type="text/javascript" th:src="@{/static/layui/layui.js}"></script>
+        <script th:inline="javascript">
+            var modulesPath = /*[[@{/static/js/modules/}]]*/'/static/js/modules/';
+            var jsVersion=[[${jsVersion}]];
+            layui.config({
+                base : modulesPath
+                ,version : jsVersion
+            //你存放新模块的目录，注意，不是layui的模块目录
+            }).use('support'); //加载入口
+        </script>
+</body>
+</html>

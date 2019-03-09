@@ -55,6 +55,37 @@ public class SystemUserService implements ISystemUserService {
     @Override
     public SystemUserDto login(String loginName, String password) {
 
+        SystemUserDto dto = new SystemUserDto();
+
+        try {
+            SystemUserDbo userDbo = get(loginName, password);
+
+            if (null != userDbo) {
+                dto.setRepairStation(systemRepairStationService.get(userDbo.getRepairStationId()));
+                dto.setLoginStatus(SystemUserLoginStatus.Success);
+                dto.setDbo(userDbo);
+                userAsyncService.updateLoginTime(userDbo.getId());
+                LOGGER.info("[][login][success,loginName:" + userDbo.getLoginName() + "]");
+            }
+            else {
+                return null;
+            }
+        }
+        catch (ServiceException e) {
+            if (e.getCode().equals(ServiceCode.user_password_error)) {
+                dto.setLoginStatus(SystemUserLoginStatus.Failed_Password_Error);
+                LOGGER.info("[][login][failed,case:password error,loginName:" + loginName + "]");
+            }
+            else {
+                LOGGER.error("[][login][failed]", e);
+            }
+        }
+
+        return dto;
+    }
+
+    private SystemUserDbo get(String loginName, String password) throws ServiceException {
+
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("[][login][loginName:" + loginName + ";password:" + password + "]");
         }
@@ -73,23 +104,50 @@ public class SystemUserService implements ISystemUserService {
             LOGGER.debug("[][login][encryptPassword:" + encryptPassword + "]");
         }
 
-        SystemUserDto dto = new SystemUserDto();
-
         String dbPassword = userDbo.getPassword();
-
         if (dbPassword.equals(encryptPassword)) {
-            dto.setRepairStation(systemRepairStationService.get(userDbo.getRepairStationId()));
-            dto.setLoginStatus(SystemUserLoginStatus.Success);
-            dto.setDbo(userDbo);
-            userAsyncService.updateLoginTime(userDbo.getId());
-            LOGGER.info("[][login][success,loginName:" + userDbo.getLoginName() + "]");
+            return userDbo;
         }
         else {
-            dto.setLoginStatus(SystemUserLoginStatus.Failed_Password_Error);
-            LOGGER.info("[][login][failed,case:password error,loginName:" + userDbo.getLoginName() + "]");
+            throw new ServiceException(ServiceCode.user_password_error,
+                    "loginName:" + loginName + ";password:" + password + ",params is error ");
+        }
+    }
+
+    @Override
+    public SystemUserDto loginSupport(String loginName, String password) {
+
+        SystemUserDto userDto = new SystemUserDto();
+
+        try {
+            SystemUserDbo userDbo = get(loginName, password);
+
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("[][loginSupport][" + userDbo + "]");
+            }
+            if (null != userDbo) {
+
+                if (null != userDbo.getSupportManager() && 1 == userDbo.getSupportManager().intValue()) {
+                    userDto.setLoginStatus(SystemUserLoginStatus.Success);
+                    userDto.setDbo(userDbo);
+                    return userDto;
+                }
+                userDto.setLoginStatus(SystemUserLoginStatus.Failed_Unsupport_Error);
+                return userDto;
+            }
+            return null;
+        }
+        catch (ServiceException e) {
+            if (e.getCode().equals(ServiceCode.user_password_error)) {
+                userDto.setLoginStatus(SystemUserLoginStatus.Failed_Password_Error);
+            }
+            else {
+                LOGGER.error("[][][]", e);
+            }
         }
 
-        return dto;
+        return userDto;
+
     }
 
     @Override

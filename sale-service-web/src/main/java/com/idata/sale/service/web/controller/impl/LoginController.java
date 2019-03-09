@@ -45,12 +45,6 @@ public class LoginController extends BaseController {
         return "search";
     }
 
-    @RequestMapping("/suggestion")
-    public String suggestion() {
-
-        return "suggestion";
-    }
-
     @Autowired
     private ISystemUserService userServcice;
 
@@ -117,6 +111,87 @@ public class LoginController extends BaseController {
         getRequest().getSession().removeAttribute(SessionAttr.LoginUser.getName());
         getRequest().getSession().removeAttribute(SessionAttr.LoginRepairStation.getName());
         getRequest().getSession().removeAttribute(SessionAttr.RepairStationId.getName());
+    }
+
+    @RequestMapping("/suggestion")
+    public String suggestion() {
+
+        return "customerSuggestion";
+
+    }
+
+    @RequestMapping(path = { "/support" })
+    public String support() {
+        return "support";
+    }
+
+    @RequestMapping(path = { "/support/login" }, method = { RequestMethod.POST })
+    public String supportLogin(SystemUserDto userDto) {
+
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("[][supportLogin][" + userDto + "]");
+        }
+
+        if (null == userDto) {
+            return "support";
+        }
+
+        String loginName = userDto.getLoginName();
+        if (StringUtils.isEmpty(loginName)) {
+
+            return "support";
+        }
+
+        String password = userDto.getPassword();
+        if (StringUtils.isEmpty(password)) {
+
+            return "support";
+        }
+
+        SystemUserDto loginUserDto = userServcice.loginSupport(userDto.getLoginName(), userDto.getPassword());
+
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("[][][" + loginUserDto + "]");
+        }
+
+        if (null == loginUserDto) {
+            getRequest().setAttribute("errorCode", ControllerErrorCode.not_found_obj.getCode());
+            getRequest().setAttribute("loginName", loginName);
+            getRequest().setAttribute("password", password);
+
+            return "support";
+        }
+        else {
+            SystemUserLoginStatus loginStatus = loginUserDto.getLoginStatus();
+
+            if (SystemUserLoginStatus.Failed_Password_Error.equals(loginStatus)) {
+                getRequest().setAttribute("errorCode", ControllerErrorCode.user_password_error.getCode());
+                getRequest().setAttribute("loginName", loginName);
+                getRequest().setAttribute("password", password);
+                return "support";
+            }
+            else if (SystemUserLoginStatus.Failed_Unsupport_Error.equals(loginStatus)) {
+                getRequest().setAttribute("errorCode", ControllerErrorCode.user_not_allow_login_error.getCode());
+                getRequest().setAttribute("loginName", loginName);
+                getRequest().setAttribute("password", password);
+                return "support";
+            }
+            else if (SystemUserLoginStatus.Success.equals(loginStatus)) {
+                clearSession();
+                getRequest().getSession().setAttribute(SessionAttr.LoginUser.getName(), loginUserDto.getDbo());
+                LOGGER.info("[][loginSupport][success]");
+                LOGGER.info("[][loginSupport][" + userDto + "]");
+                return "redirect:index";
+            }
+            else {
+                getRequest().setAttribute("errorCode", ControllerErrorCode.unknown_exception.getCode());
+                getRequest().setAttribute("loginName", loginName);
+                getRequest().setAttribute("password", password);
+                return "support";
+            }
+
+        }
+
     }
 
 }

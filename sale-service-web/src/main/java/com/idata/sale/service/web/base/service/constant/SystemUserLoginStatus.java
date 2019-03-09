@@ -2,7 +2,8 @@ package com.idata.sale.service.web.base.service.constant;
 
 public enum SystemUserLoginStatus {
 
-    Success(1, "loginSuccess"), Failed_Password_Error(2, "passwordError");
+    Success(1, "loginSuccess"), Failed_Password_Error(2, "passwordError"), Failed_Unsupport_Error(3, "unsupportError");
+    ;
 
     private int code;
 

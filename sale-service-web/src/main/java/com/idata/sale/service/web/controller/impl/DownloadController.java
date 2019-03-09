@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,24 +38,48 @@ public class DownloadController {
     @Autowired
     private ISystemExportTaskService exportTaskService;
 
+    @Value("${com.idt.ss.dir.upload.suggestion.attachement}")
+    private String suggestionAttachementDir;
+
     @LoginUserCheck
     @RequestMapping(path = { "/download" }, method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity download(@RequestParam(name = "id") String downloadId) {
+    public @ResponseBody ResponseEntity download(@RequestParam(name = "id") String downloadId,
+            @RequestParam(name = "category", required = false) String category) {
 
-        SystemExportTaskDbo exportTaskDbo = exportTaskService.get(downloadId);
-        if (null == exportTaskDbo || StringUtils.isEmpty(exportTaskDbo.getStorePath())) {
-            return new ResponseEntity("没有找到资源", HttpStatus.OK);
+        String storePath = "";
+        String fileSuffix = "";
+        String fileName = "";
+
+        if ("customerSuggestionAttachment".equals(category)) {
+            storePath = suggestionAttachementDir + downloadId;
+            fileSuffix = FileUtils.getFileSuffix(downloadId);
+
+        }
+        else {
+            SystemExportTaskDbo exportTaskDbo = exportTaskService.get(downloadId);
+            if (null == exportTaskDbo || StringUtils.isEmpty(exportTaskDbo.getStorePath())) {
+                return new ResponseEntity("没有找到资源", HttpStatus.OK);
+            }
+            storePath = exportTaskDbo.getStorePath();
+            fileSuffix = FileUtils.getFileSuffix(storePath);
+            fileName = exportTaskDbo.getDownloadFileName() + fileSuffix;
         }
 
-        String storePath = exportTaskDbo.getStorePath();
-        String fileSuffix = FileUtils.getFileSuffix(storePath);
         try {
-            InputStream inputStream = new FileInputStream(new File(storePath));
+
+            File file = new File(storePath);
+            if (!file.exists()) {
+                return new ResponseEntity("没有找到资源", HttpStatus.OK);
+            }
+            if ("".equals(fileName)) {
+                fileName = file.getName();
+            }
+            InputStream inputStream = new FileInputStream(file);
             InputStreamResource inputStreamResource = new InputStreamResource(inputStream);
             HttpHeaders headers = new HttpHeaders();
             headers.setContentLength(Files.size(Paths.get(storePath)));
-            headers.set(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename="
-                    + (URLEncoder.encode(exportTaskDbo.getDownloadFileName() + fileSuffix, "utf-8")));
+            headers.set(HttpHeaders.CONTENT_DISPOSITION,
+                    "attachment;filename=" + (URLEncoder.encode(fileName, "utf-8")));
             return new ResponseEntity(inputStreamResource, headers, HttpStatus.OK);
         }
         catch (Exception e) {

@@ -37,6 +37,8 @@ public class LoginUserCheckAspect {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .getRequest();
 
+        String requestUrl = request.getRequestURI();
+
         Object loginUserObj = request.getSession().getAttribute(SessionAttr.LoginUser.getName());
 
         try {
@@ -47,6 +49,10 @@ public class LoginUserCheckAspect {
 
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("[][LoginUserAspect][loginUser session has invalid]");
+            }
+
+            if (requestUrl.indexOf("/support") > 0) {
+                return "redirect:/support";
             }
 
             return "redirect:/";

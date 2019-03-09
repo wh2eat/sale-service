@@ -13,6 +13,9 @@ public class SystemUserDbo {
     @JSONField(serialize = false)
     private Integer id;
 
+    @Column
+    private Integer supportManager;
+
     @JSONField(name = "id")
     @Column()
     private String udid;
@@ -179,6 +182,14 @@ public class SystemUserDbo {
                 + ", password=" + password + ", createTime=" + createTime + ", updateTime=" + updateTime
                 + ", lastLoginTime=" + lastLoginTime + ", repairStationId=" + repairStationId + ", repairStation="
                 + repairStation + "]";
+    }
+
+    public Integer getSupportManager() {
+        return supportManager;
+    }
+
+    public void setSupportManager(Integer supportManager) {
+        this.supportManager = supportManager;
     }
 
 }
