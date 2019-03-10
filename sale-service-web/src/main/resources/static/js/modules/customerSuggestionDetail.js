@@ -32,7 +32,7 @@ layui.define([ 'jquery', 'layer','laytpl','form','aform', 'element','alog','ajx'
                                 var attachmentUrl = "../download?id="+attachments[i]+"&category=customerSuggestionAttachment";
                                 var attachmentElement = "";
                                 if(isPicture(attachment)){
-                                    attachmentElement="<img src='"+attachmentUrl+"'>";
+                                    attachmentElement="<img src='"+attachmentUrl+"' style='width:auto;height:auto;margin-right:10px'>";
                                     $(".image-attachment").append(attachmentElement);
                                 }else{
                                     attachmentElement = "<li><a href='../download?id="+attachments[i]+"&category=customerSuggestionAttachment' target='_blank'>附件-"+(i+1)+"</a></li>";
