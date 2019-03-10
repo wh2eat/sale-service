@@ -28,7 +28,16 @@ layui.define([ 'jquery', 'layer','laytpl','form','aform', 'element','alog','ajx'
                             var attachments = attachmentStr.split(",");
                             var length = attachments.length;
                             for(var i=0;i<length;i++){
-                                $(".attachment").append("<li><a href='../download?id="+attachments[i]+"&category=customerSuggestionAttachment' target='_blank'>附件-"+(i+1)+"</a></li>")
+                                var attachment = attachments[i];
+                                var attachmentUrl = "../download?id="+attachments[i]+"&category=customerSuggestionAttachment";
+                                var attachmentElement = "";
+                                if(isPicture(attachment)){
+                                    attachmentElement="<img src='"+attachmentUrl+"'>";
+                                    $(".image-attachment").append(attachmentElement);
+                                }else{
+                                    attachmentElement = "<li><a href='../download?id="+attachments[i]+"&category=customerSuggestionAttachment' target='_blank'>附件-"+(i+1)+"</a></li>";
+                                    $(".attachment").append(attachmentElement);
+                                }
                             }
                         }
                     }else{
@@ -41,6 +50,30 @@ layui.define([ 'jquery', 'layer','laytpl','form','aform', 'element','alog','ajx'
         },function(error){
             layer.closeAll();
         });
+    }
+    
+    function isPicture(filename){
+        if(filename.endsWith(".bmp")
+                ||filename.endsWith(".png")
+                ||filename.endsWith(".jpeg")
+                ||filename.endsWith(".gif")
+                ||filename.endsWith(".jpg")){
+            return true;
+        }
+        
+        return false;
+    }
+    
+    function isVideo(filename){
+        if(filename.endsWith(".mp4")
+                ||filename.endsWith(".avi")
+                ||filename.endsWith(".mpeg")
+                ||filename.endsWith(".mpg")
+                ||filename.endsWith(".wmv")){
+            return true;
+        }
+        
+        return false;
     }
     
     
@@ -104,5 +137,5 @@ layui.define([ 'jquery', 'layer','laytpl','form','aform', 'element','alog','ajx'
         });
     }
         
-    exports('customerSuggestion', {}); // 注意，这里是模块输出的核心，模块名必须和use时的模块名一致
+    exports('customerSuggestionDetail', {}); // 注意，这里是模块输出的核心，模块名必须和use时的模块名一致
 });

@@ -37,7 +37,7 @@
 }
 
 </style>
-<title>服务与支持——首页</title>
+<title>服务与支持 — 管理后台</title>
 </head>
 <body>
     
@@ -45,12 +45,19 @@
         <div class="layui-row" style="margin-top:20px;font-size:20px;font-weight:blod;">
         <span th:text="${session.loginUser?.userName}" />，你好！
         <hr>
-        <span>功能列表</span>
+        <span>服务与支持</span>
+        <table class="layui-table">
+            <tr>
+             <td>
+                <a class="jump" th:href="@{/support/index?target=customerList}">
+                    <i class="layui-icon layui-icon-triangle-r"></i>&nbsp;客户投诉建议  
+                </a>
+             </td>
+            </tr>
+        </table>
         <ul>
             <li>
-                <a class="jump" th:href="@{/support/index?target=customerList}">
-                    <i class="layui-icon layui-icon-triangle-r"></i>&nbsp;客诉列表  
-                </a>
+                
             </li>
         </ul>
     </div>

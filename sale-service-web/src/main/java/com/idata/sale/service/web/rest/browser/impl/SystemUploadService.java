@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.idata.sale.service.web.util.FileUtils;
 
 @RestController
 @RequestMapping(path = "/api/browser/upload")
@@ -135,8 +138,10 @@ public class SystemUploadService {
                 LOGGER.debug("[][][lastIdx:" + lastIdx + "]");
             }
 
-            if (lastIdx > 0) {
-                fileName = prefix + "_" + uid + "." + originalName.substring(lastIdx + 1, originalName.length());
+            String fileSuffix = FileUtils.getFileSuffix(originalName).toLowerCase();
+
+            if (StringUtils.isNotEmpty(fileSuffix)) {
+                fileName = prefix + "_" + uid + "." + fileSuffix;
             }
             else {
                 fileName = prefix + "_" + uid;

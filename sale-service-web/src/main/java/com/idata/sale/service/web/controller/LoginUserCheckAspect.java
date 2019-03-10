@@ -8,7 +8,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -22,6 +24,9 @@ public class LoginUserCheckAspect {
 
     public LoginUserCheckAspect() {
     }
+
+    @Autowired
+    WebApplicationContext webApplicationConnect;
 
     @Pointcut("@annotation(com.idata.sale.service.web.controller.LoginUserCheck)")
     public void excudeService() {
