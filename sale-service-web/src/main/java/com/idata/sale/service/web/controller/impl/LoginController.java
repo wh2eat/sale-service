@@ -120,6 +120,11 @@ public class LoginController extends BaseController {
 
     }
 
+    @RequestMapping(path = { "/supportIndex" })
+    public String supportIndex() {
+        return "supportIndex";
+    }
+
     @RequestMapping(path = { "/support" })
     public String support() {
         return "support";
